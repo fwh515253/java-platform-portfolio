@@ -1,3 +1,7 @@
+"use client";
+
+import { useEffect, useState } from "react";
+
 const skills = [
   "Java / Spring Boot",
   "Docker / Harbor",
@@ -104,17 +108,85 @@ const capabilityItems = [
 ];
 
 export default function Home() {
+  const [copyMessage, setCopyMessage] = useState("");
+  const [scrollProgress, setScrollProgress] = useState(0);
+  const [showTopButton, setShowTopButton] = useState(false);
+  const [activeCase, setActiveCase] = useState(projects[0].slug);
+
+  useEffect(() => {
+    const updateScrollState = () => {
+      const scrollableHeight = document.documentElement.scrollHeight - window.innerHeight;
+      const progress = scrollableHeight > 0 ? (window.scrollY / scrollableHeight) * 100 : 0;
+      setScrollProgress(Math.min(100, Math.max(0, progress)));
+      setShowTopButton(window.scrollY > 520);
+    };
+
+    updateScrollState();
+    window.addEventListener("scroll", updateScrollState, { passive: true });
+    return () => window.removeEventListener("scroll", updateScrollState);
+  }, []);
+
+  useEffect(() => {
+    const projectCards = Array.from(document.querySelectorAll<HTMLElement>(".project-card[id^='case-']"));
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) setActiveCase(entry.target.id.replace("case-", ""));
+      });
+    }, { rootMargin: "-18% 0px -62% 0px", threshold: 0 });
+
+    projectCards.forEach((card) => observer.observe(card));
+    return () => observer.disconnect();
+  }, []);
+
+  useEffect(() => {
+    const revealItems = Array.from(document.querySelectorAll<HTMLElement>(".reveal-item"));
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    if (reduceMotion) {
+      revealItems.forEach((item) => item.classList.add("is-visible"));
+      return;
+    }
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("is-visible");
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12, rootMargin: "0px 0px -36px" });
+
+    revealItems.forEach((item, index) => {
+      item.style.setProperty("--reveal-delay", `${Math.min(index % 5, 4) * 70}ms`);
+      observer.observe(item);
+    });
+
+    return () => observer.disconnect();
+  }, []);
+
+  const copyContact = async (value: string, label: string) => {
+    try {
+      await navigator.clipboard.writeText(value);
+      setCopyMessage(`${label}已复制`);
+      window.setTimeout(() => setCopyMessage(""), 2200);
+    } catch {
+      setCopyMessage("复制失败，请手动复制");
+      window.setTimeout(() => setCopyMessage(""), 2200);
+    }
+  };
+
   return (
     <main className="portfolio-shell" id="top">
+      <div className="scroll-progress" aria-hidden="true"><span style={{ width: `${scrollProgress}%` }} /></div>
       <aside className="profile-rail" aria-label="个人信息">
         <div className="rail-inner">
           <div className="rail-brand"><span className="brand-mark">F</span><span>平台工程 / 01</span></div>
 
           <div className="profile-block">
             <div className="profile-orbit"><span>FH</span></div>
-            <p className="rail-kicker">Java 后端工程师</p>
-            <h1>把平台需求，<br /><em>落成可运行的系统。</em></h1>
-            <p className="profile-summary">专注 Java 后端、云原生平台与 AI 应用工程化，参与从对象建模、流程编排到状态回读、异常闭环的完整建设过程。</p>
+            <p className="rail-kicker">技术栈 / 能力域</p>
+            <h1>Java 后端<br /><em>工程师</em></h1>
+            <p className="profile-summary">Java / Spring Boot · Docker / Kubernetes · Prometheus / Grafana · RAG / Milvus</p>
             <div className="availability"><i /> 正在寻找合适机会</div>
           </div>
 
@@ -145,43 +217,73 @@ export default function Home() {
 
         <section className="overview-section" aria-labelledby="overview-title">
           <div className="section-marker"><span>00</span><i /><span>总览</span></div>
-          <div className="overview-grid">
-            <div>
-              <h2 id="overview-title">从对象建模，<br /><strong>到运行闭环。</strong></h2>
-              <p>我的工作重点，是把基础设施能力变成业务可以使用的流程：定义应用、镜像、服务和资源的关系，组织构建、发布、治理和监控，并让执行结果可回传、问题可定位、失败可恢复。</p>
+          <div className="overview-grid overview-ability-grid">
+            <div className="overview-intro">
+              <span className="overview-kicker">核心技术能力</span>
+              <h2 id="overview-title">核心技术<br /><strong>能力覆盖</strong></h2>
+              <p>以 Java / Spring Boot 为主，具备云原生平台、服务治理、监控告警与 RAG 应用的项目经验。</p>
+            </div>
+            <div className="overview-stack-grid" aria-label="核心技术能力">
+              <article className="overview-stack-card reveal-item">
+                <div className="overview-stack-card-top"><span>01 / 后端服务</span><i /></div>
+                <strong>Java · Spring Boot</strong>
+                <p>服务建模、接口设计、业务流程与状态管理</p>
+                <div className="overview-stack-tags"><span>Java</span><span>Spring Boot</span><span>REST</span></div>
+              </article>
+              <article className="overview-stack-card reveal-item">
+                <div className="overview-stack-card-top"><span>02 / 云原生平台</span><i /></div>
+                <strong>Docker · Kubernetes · Istio</strong>
+                <p>镜像制品、应用编排、集群接入与服务治理</p>
+                <div className="overview-stack-tags"><span>Docker</span><span>Kubernetes</span><span>Istio</span></div>
+              </article>
+              <article className="overview-stack-card reveal-item">
+                <div className="overview-stack-card-top"><span>03 / 可观测性</span><i /></div>
+                <strong>Prometheus · Grafana</strong>
+                <p>指标采集、监控面板、告警规则与异常定位</p>
+                <div className="overview-stack-tags"><span>Metrics</span><span>Alerting</span><span>Tracing</span></div>
+              </article>
+              <article className="overview-stack-card reveal-item">
+                <div className="overview-stack-card-top"><span>04 / AI 工程化</span><i /></div>
+                <strong>RAG · Milvus · SSE</strong>
+                <p>知识入库、检索增强、引用证据与流式问答</p>
+                <div className="overview-stack-tags"><span>RAG</span><span>Embedding</span><span>SSE</span></div>
+              </article>
             </div>
           </div>
-          <div className="metric-strip"><div><strong>4</strong><span>核心项目</span></div><div><strong>100+</strong><span>监控服务覆盖</span></div><div><strong>10—30</strong><span>单项目服务规模</span></div><div><strong>Java</strong><span>主力开发语言</span></div></div>
+          <div className="metric-strip overview-tech-strip"><div><strong>Java / Spring Boot</strong><span>主力后端技术</span></div><div><strong>Docker / K8s</strong><span>云原生运行基础</span></div><div><strong>Prometheus / Grafana</strong><span>监控与告警体系</span></div><div><strong>Go / dockertool</strong><span>工程辅助能力</span></div></div>
         </section>
 
         <section className="content-section" id="capabilities" aria-labelledby="capabilities-title">
           <div className="section-marker"><span>个人定位</span><i /><span>能力概览</span></div>
-          <div className="section-heading"><h2 id="capabilities-title">能力定位，<br /><em>我能承担什么。</em></h2><p>这一部分只回答“我能承担什么工作”，项目案例会在下面进一步说明“我具体做过什么”。</p></div>
-          <div className="capability-grid">{capabilityItems.map((item) => <article className="capability-card" key={item.title}><div className="capability-card-top"><span>{item.label}</span><i /></div><h3>{item.title}</h3><p>{item.text}</p></article>)}</div>
+          <div className="section-heading"><h2 id="capabilities-title">能力概览</h2><p>覆盖 Java 后端、云原生平台、可观测性与 AI 应用，具体实践见下方项目案例。</p></div>
+          <div className="capability-grid">{capabilityItems.map((item) => <article className="capability-card reveal-item" key={item.title}><div className="capability-card-top"><span>{item.label}</span><i /></div><h3>{item.title}</h3><p>{item.text}</p></article>)}</div>
         </section>
 
         <section className="content-section projects-section" id="projects" aria-labelledby="projects-title">
           <div className="section-marker"><span>02</span><i /><span>精选项目</span></div>
           <div className="section-heading project-heading"><h2 id="projects-title">项目案例</h2><p>每个项目按四层展开：项目定位、负责边界、关键工程动作和最终价值，让贡献不再停留在技术名词。</p></div>
-          <div className="project-stack">{projects.map((project) => <article className={`project-card project-${project.tone}`} key={project.number}><div className="project-detail"><div className="project-name-line"><span>{project.category}</span><span>{project.stage}</span></div><div className="project-title-line"><h3>{project.name}</h3><a className="project-detail-link" href={`/projects/${project.slug}`}>查看工程视图 <span>↗</span></a></div><h4>{project.subtitle}</h4><div className="project-facts"><div><span>角色定位</span><strong>{project.role}</strong></div><div><span>负责范围</span><strong>{project.scope}</strong></div></div><div className="detail-block"><span className="detail-label">问题边界</span><p>{project.challenge}</p></div><div className="detail-block"><span className="detail-label">关键工程动作</span><div className="work-grid">{project.details.map((detail, index) => <div className="work-item" key={detail.title}><span>{String(index + 1).padStart(2, "0")}</span><div><h5>{detail.title}</h5><p>{detail.text}</p></div></div>)}</div></div><div className="project-value"><span className="detail-label">工程价值</span><p>{project.value}</p></div><div className="project-tags">{project.tags.map((tag) => <span key={tag}>{tag}</span>)}</div></div></article>)}</div>
+          <div className="project-index" aria-label="项目索引"><span>项目索引</span><div>{projects.map((project) => <a className={activeCase === project.slug ? "is-active" : ""} href={`#case-${project.slug}`} key={project.slug}>{project.name}</a>)}</div></div>
+          <div className="project-stack">{projects.map((project) => <article id={`case-${project.slug}`} className={`project-card project-${project.tone} reveal-item`} key={project.number}><div className="project-detail"><div className="project-name-line"><span>{project.category}</span><span>{project.stage}</span></div><div className="project-title-line"><h3>{project.name}</h3><a className="project-detail-link" href={`/projects/${project.slug}`}>查看工程视图 <span>↗</span></a></div><h4>{project.subtitle}</h4><div className="project-facts"><div><span>角色定位</span><strong>{project.role}</strong></div><div><span>负责范围</span><strong>{project.scope}</strong></div></div><div className="project-flow" aria-label={`${project.name} 工程链路`}>{project.flow.map((step, index) => <div className="project-flow-step" key={step}><span>{String(index + 1).padStart(2, "0")}</span><strong>{step}</strong>{index < project.flow.length - 1 && <i aria-hidden="true" />}</div>)}</div><div className="detail-block"><span className="detail-label">问题边界</span><p>{project.challenge}</p></div><div className="detail-block"><span className="detail-label">关键工程动作</span><div className="work-grid">{project.details.map((detail, index) => <div className="work-item" key={detail.title}><span>{String(index + 1).padStart(2, "0")}</span><div><h5>{detail.title}</h5><p>{detail.text}</p></div></div>)}</div></div><div className="project-value"><span className="detail-label">工程价值</span><p>{project.value}</p></div><div className="project-tags">{project.tags.map((tag) => <span key={tag}>{tag}</span>)}</div></div></article>)}</div>
         </section>
 
         <section className="content-section experience-section" id="experience" aria-labelledby="experience-title">
           <div className="section-marker"><span>03</span><i /><span>经历</span></div>
           <div className="section-heading"><h2 id="experience-title">经历与方向</h2><p>从后端开发进入云原生平台建设，在真实项目中不断扩大对系统边界和交付结果的负责范围。</p></div>
-          <div className="experience-list"><div className="experience-item"><span className="experience-date">2023.06 — 2026.03</span><div><h3>航天宏图信息技术股份有限公司</h3><p>Java 后端工程师 · 云原生应用管理 / 镜像制品 / 服务治理 / 项目交付支持</p></div><span className="experience-type">正式工作</span></div><div className="experience-item"><span className="experience-date">2020 — 2024</span><div><h3>东北林业大学</h3><p>本科 · 软件工程</p></div><span className="experience-type">教育经历</span></div></div>
+          <div className="experience-list"><div className="experience-item reveal-item"><span className="experience-date">2023.06 — 2026.03</span><div><h3>航天宏图信息技术股份有限公司</h3><p>Java 后端工程师 · 云原生应用管理 / 镜像制品 / 服务治理 / 项目交付支持</p></div><span className="experience-type">正式工作</span></div><div className="experience-item reveal-item"><span className="experience-date">2020 — 2024</span><div><h3>东北林业大学</h3><p>本科 · 软件工程</p></div><span className="experience-type">教育经历</span></div></div>
         </section>
 
         <section className="contact-section" id="contact" aria-labelledby="contact-title">
           <div className="contact-glow" />
           <div className="section-marker"><span>04</span><i /><span>联系</span></div>
-          <h2 id="contact-title">如果你正在建设<br /><em>下一套平台。</em></h2>
-          <p>欢迎交流后端工程、云原生平台、交付系统与 AI 运维应用。</p>
-          <div className="contact-actions"><a href="mailto:[邮箱]">[邮箱] <span>↗</span></a><a href="tel:[手机]">[手机] <span>↗</span></a><a className="contact-resume" href="/resume.pdf" download>下载简历 <span>↓</span></a></div>
+          <h2 id="contact-title">联系我</h2>
+          <p>求职方向：Java 后端开发、云原生平台开发</p>
+          <div className="contact-actions"><button className="contact-copy" type="button" onClick={() => void copyContact("wh5136823@163.com", "邮箱")}><img className="contact-icon contact-icon-image" src="/contact-email.png" alt="" /><span>wh5136823@163.com</span><small>复制</small></button><button className="contact-copy" type="button" onClick={() => void copyContact("13051368230", "手机号")}><img className="contact-icon contact-icon-image" src="/contact-phone.png" alt="" /><span>13051368230</span><small>复制</small></button><a className="contact-resume" href="/resume.pdf" download>下载简历 <span>↓</span></a></div>
+          {copyMessage && <div className="copy-toast" role="status" aria-live="polite"><i />{copyMessage}</div>}
         </section>
 
         <footer className="content-footer"><span>Java 后端 / 平台工程</span><span>工程能力展示</span></footer>
       </section>
+      <button className={`back-to-top${showTopButton ? " is-visible" : ""}`} type="button" onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })} aria-label="回到顶部">↑</button>
     </main>
   );
 }
