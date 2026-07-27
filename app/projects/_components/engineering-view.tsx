@@ -1,64 +1,269 @@
+import Link from "next/link";
+
 export type EngineeringSpec = {
   slug: string;
   title: string;
-  subtitle: string;
+  shortTitle: string;
   category: string;
-  stage: string;
+  period: string;
+  role: string;
   brief: string;
+  problem: string;
   scope: string;
-  meta: [string, string][];
+  technologies: string[];
+  modules: [string, string][];
+  architecture: [string, string][];
   flow: [string, string][];
-  previewTitle: string;
-  previewStatus: string;
-  previewType: "pipeline" | "observability" | "copilot";
-  capabilities: [string, string][];
+  responsibilities: [string, string][];
+  achievements: [string, string][];
+  previewType: "platform" | "pipeline" | "gateway" | "oa";
 };
 
 export const engineeringSpecs: Record<string, EngineeringSpec> = {
+  nativesphere: {
+    slug: "nativesphere",
+    title: "NativeSphere 企业级云原生平台",
+    shortTitle: "NativeSphere",
+    category: "云原生平台",
+    period: "2023.10—2026.03",
+    role: "Java / 全栈研发工程师",
+    brief: "面向企业研发与运维团队的 Kubernetes 云原生平台，提供资源与应用管理、镜像制品、服务治理、监控告警和 AI 辅助运维等一体化能力。",
+    problem: "原始 Kubernetes、镜像仓库、服务网格与监控系统分别提供底层能力，但使用入口、资源模型和运行状态彼此割裂。平台需要把它们组织为面向研发与运维人员的统一业务控制面，并处理操作请求、异步执行结果与集群真实状态之间的一致性。",
+    scope: "平台控制面 / 可观测性 / AI 运维",
+    technologies: ["Java", "Spring Boot", "Spring Cloud", "MyBatis", "Vue", "MySQL", "Redis", "Kubernetes", "Docker", "Harbor", "Istio", "Prometheus", "PromQL", "Grafana", "RAG"],
+    modules: [
+      ["应用与资源管理", "封装 Kubernetes 资源操作，覆盖资源模型转换、生命周期管理、状态同步、事件日志和异常处理。"],
+      ["镜像与应用交付", "串联 Docker 构建、Harbor 制品分发与应用部署，使镜像版本、构建结果和运行状态可追踪。"],
+      ["服务治理", "通过 Istio 管理流量路由、限流等治理策略，并处理配置校验、下发结果和状态回读。"],
+      ["监控与告警", "以 Kubernetes 资源模型组织 Prometheus 指标、告警规则、告警事件和 Grafana 可视化。"],
+      ["监控告警智能助手", "聚合告警上下文、资源状态、指标和日志，结合 RAG 检索运维知识与历史处置记录。"],
+    ],
+    architecture: [
+      ["交互层", "Vue 管理控制台承载资源、应用、服务治理、监控告警和智能问答等操作入口。"],
+      ["平台服务层", "Java 服务负责领域模型、权限校验、业务编排、状态管理和对外 REST API。"],
+      ["能力适配层", "分别适配 Kubernetes API、Docker、Harbor、Istio、Prometheus、Grafana 与大模型服务。"],
+      ["基础设施层", "多集群 Kubernetes 及其工作负载、网络、存储、配置和扩展资源。"],
+    ],
+    flow: [["资源接入", "统一模型"], ["镜像交付", "制品可追踪"], ["应用运行", "状态同步"], ["治理观测", "信号关联"], ["智能处置", "辅助决策"]],
+    responsibilities: [
+      ["平台资源控制面", "封装 Kubernetes API，完成资源模型转换、增删改查、状态同步、事件日志查询及异常处理。"],
+      ["应用与制品生命周期", "串联 Docker 构建、Harbor 推送、应用部署、启停、重启、升级和状态查询。"],
+      ["服务治理能力", "接入 Istio，将路由与限流策略纳入参数校验、配置下发、结果验证和操作留痕。"],
+      ["可观测性模型", "将 Kubernetes 资源模型映射到 Prometheus 时序指标，串联指标、告警、资源状态、事件和日志。"],
+      ["AI 辅助运维", "聚合故障上下文，结合 RAG 检索运维知识和历史记录，生成有依据的原因分析与处置建议。"],
+      ["全栈工程交付", "参与 Vue 管理端页面、接口联调、单元与接口测试、发布部署、线上排障及技术文档。"],
+    ],
+    achievements: [
+      ["统一自助入口", "将分散的基础设施能力沉淀为可视化、自助式平台功能，降低 YAML、命令行和管理员人工操作依赖。"],
+      ["平台能力闭环", "形成资源接管、制品交付、应用部署、服务治理、运行观测和事件处置的一体化链路。"],
+      ["故障分析增强", "通过统一指标模型、告警上下文关联和 RAG 知识检索，提高监控能力的扩展性与问题分析效率。"],
+    ],
+    previewType: "platform",
+  },
   "release-flow": {
-    slug: "release-flow", title: "云原生持续交付与发布平台", subtitle: "发布流水线", category: "交付系统", stage: "系统设计",
-    brief: "将代码变更、制品、环境和发布结果组织成一条可验证、可追踪、可恢复的交付链路。", scope: "版本 / 构建 / 发布 / 回滚",
-    meta: [["项目定位", "持续交付控制面"], ["负责范围", "版本 / 构建 / 发布 / 回滚"], ["核心目标", "让交付过程可追踪"]],
-    flow: [["代码变更", "提交"], ["制品构建", "构建"], ["环境发布", "部署"], ["回滚验证", "恢复"]], previewTitle: "发布流水线", previewStatus: "发布 / 生产环境", previewType: "pipeline",
-    capabilities: [["交付对象抽象", "将代码版本、镜像制品、目标环境、发布任务和执行记录统一建模。"], ["阶段状态设计", "拆解构建、校验、发布、健康检查和回滚阶段，明确成功与失败边界。"], ["异常与恢复", "补齐幂等执行、失败重试、日志检索、环境隔离和回滚入口。"]],
+    slug: "release-flow",
+    title: "ReleaseFlow 云原生持续交付与发布平台",
+    shortTitle: "ReleaseFlow",
+    category: "持续交付平台",
+    period: "2024.06—2026.03",
+    role: "Java / 全栈研发工程师",
+    brief: "面向云原生应用交付场景的发布管理平台，将应用版本、构建制品、目标环境和发布批次组织为标准化交付流程。",
+    problem: "不同项目同时存在直接向 Kubernetes 部署和调用 Jenkins Pipeline 的发布方式。若两类通道各自维护对象和状态，版本、环境、日志与结果难以统一追踪，失败后的重试和回滚也依赖人工判断。",
+    scope: "版本 / 制品 / 环境 / 发布执行",
+    technologies: ["Java", "Spring Boot", "Vue", "MySQL", "Redis", "Kubernetes", "Jenkins Pipeline", "Docker", "Harbor"],
+    modules: [
+      ["发布对象管理", "统一管理应用版本、构建制品、目标环境、发布批次和执行记录。"],
+      ["Kubernetes 直接发布", "由平台完成资源生成、配置下发、执行状态同步和发布结果处理。"],
+      ["Jenkins Pipeline 发布", "触发 Jenkins 任务并完成参数传递、状态轮询、日志读取和结果回传。"],
+      ["异常恢复", "支持失败重试、超时处理、环境隔离、回滚及执行过程追踪。"],
+    ],
+    architecture: [
+      ["发布控制台", "创建发布任务、选择执行通道和环境，查看进度、日志、重试与回滚。"],
+      ["发布编排服务", "校验发布对象并驱动状态机，根据策略选择 Kubernetes 或 Jenkins 执行器。"],
+      ["执行适配器", "屏蔽 Kubernetes API 与 Jenkins Pipeline 的调用差异，回传统一执行事件。"],
+      ["状态与审计", "持久化任务、阶段、日志、结果及操作记录，支持发布过程追溯。"],
+    ],
+    flow: [["发布申请", "对象校验"], ["策略编排", "选择通道"], ["执行发布", "K8s / Jenkins"], ["状态跟踪", "日志结果"], ["异常恢复", "重试回滚"]],
+    responsibilities: [
+      ["发布领域建模", "围绕应用版本、制品、环境、发布批次、执行阶段和状态流转设计核心对象。"],
+      ["双通道执行编排", "实现 Kubernetes 直接部署链路，并集成 Jenkins Pipeline 的触发、参数、状态、日志和结果。"],
+      ["可靠性机制", "处理幂等校验、失败重试、超时、环境隔离、状态不一致、流程中断与回滚。"],
+      ["发布控制台", "参与 Vue 端发布创建、执行方式选择、环境配置、进度日志、重试与回滚页面。"],
+      ["质量与运行支持", "完成接口联调、测试、发布部署、线上问题定位和流程文档沉淀。"],
+    ],
+    achievements: [
+      ["统一发布控制面", "将 Kubernetes 直接部署与 Jenkins Pipeline 两类执行模式纳入同一业务流程。"],
+      ["端到端追溯", "建立版本、制品、环境、发布任务、执行日志和运行结果之间的完整关联。"],
+      ["降低发布风险", "通过状态校验、失败重试和回滚机制增强异常场景下的可恢复性。"],
+    ],
+    previewType: "pipeline",
   },
-  "signal-room": {
-    slug: "signal-room", title: "NativeSphere 云平台监控与告警系统", subtitle: "监控与告警", category: "可观测性", stage: "持续维护",
-    brief: "在 100+ 服务的运行场景中维护从指标、告警、日志到问题定位的可用链路。", scope: "平台 / 集群 / 工作负载 / 服务 / 告警",
-    meta: [["项目定位", "云平台运行观测系统"], ["负责范围", "指标 / 告警 / 状态 / 排障"], ["覆盖规模", "100+ 服务"]],
-    flow: [["指标采集", "指标"], ["告警规则", "告警"], ["异常定位", "链路"], ["问题闭环", "验证"]], previewTitle: "监控与告警中心", previewStatus: "监控 / 运行中", previewType: "observability",
-    capabilities: [["观测对象分层", "按平台、集群、项目、工作负载和服务组织指标，建立从全局到单实例的下钻路径。"], ["信号关联与降噪", "把告警规则、服务状态、事件、日志和链路放在同一条排障路径中，减少孤立指标。"], ["运行问题闭环", "维护指标缺失、状态不一致、告警误触发等场景的定位、修复和发布后验证。"]],
+  bpaas: {
+    slug: "bpaas",
+    title: "BPAAS 统一网关与服务接入平台",
+    shortTitle: "BPAAS",
+    category: "微服务基础设施",
+    period: "2024.10—2026.03",
+    role: "Java 后端开发工程师",
+    brief: "面向公司内部业务系统的统一服务接入平台，对服务、接口、环境和路由配置进行集中管理，并与网关执行模块协同完成配置下发及服务访问。",
+    problem: "内部系统接入网关时存在服务信息、接口定义、环境地址和路由规则分散维护的问题。平台需要提供统一接入模型和配置流程，同时与网关核心模块保持配置、执行结果和运行状态同步。",
+    scope: "服务 / 接口 / 环境 / 路由配置",
+    technologies: ["Java", "Spring Boot", "Spring Cloud", "MyBatis", "MySQL", "Redis", "微服务", "API Gateway"],
+    modules: [
+      ["服务管理", "维护服务基础信息、环境配置、启停状态和接入关系。"],
+      ["接口管理", "集中管理接口路径、请求方式、参数定义及服务归属。"],
+      ["路由配置", "组织路由规则及环境映射，并向网关执行模块下发配置。"],
+      ["调用与运行记录", "保存配置处理结果、调用记录和异常信息，支撑联调与排障。"],
+    ],
+    architecture: [
+      ["业务接入层", "内部系统通过平台登记服务、接口、环境与路由信息。"],
+      ["配置管理层", "Java 服务完成领域校验、关联管理、状态维护和配置版本组织。"],
+      ["网关协同层", "对接网关核心模块，完成配置下发、结果回读与状态同步。"],
+      ["运行追踪层", "沉淀调用记录、异常信息和变更结果，为联调及问题定位提供依据。"],
+    ],
+    flow: [["登记服务", "基础信息"], ["配置接口", "契约关系"], ["映射环境", "访问目标"], ["下发路由", "网关执行"], ["回读状态", "结果追踪"]],
+    responsibilities: [
+      ["领域与接口开发", "参与服务、接口、环境和路由领域模型设计及后端 REST API 开发。"],
+      ["服务接入流程", "实现服务信息、接口关系、环境映射、参数校验和状态管理。"],
+      ["网关模块协同", "完成路由配置下发、处理结果回读、异常记录和运行状态同步。"],
+      ["联调与问题处理", "维护调用记录与运行信息，配合网关研发进行策略验证、系统联调和问题定位。"],
+      ["工程交付", "参与单元与接口测试、版本发布、部署支持和接口文档维护。"],
+    ],
+    achievements: [
+      ["统一接入规范", "形成服务、接口、环境和路由的一致化管理流程，减少各系统重复配置。"],
+      ["集中配置管理", "统一维护服务元数据和网关配置关系，提高变更的可维护性。"],
+      ["结果可追溯", "打通管理端与网关执行模块的配置及状态链路，提升联调和故障定位效率。"],
+    ],
+    previewType: "gateway",
   },
-  "ops-copilot": {
-    slug: "ops-copilot", title: "云原生监控告警智能助手", subtitle: "运维智能助手", category: "AI 运维", stage: "智能流程",
-    brief: "把告警事件、服务上下文和运维知识组织成可检索、有引用、可流式交互的辅助决策链路。", scope: "知识库 / 检索增强 / 流式问答",
-    meta: [["项目定位", "AI 运维辅助决策"], ["负责范围", "知识 / 检索 / 模型 / 反馈"], ["核心目标", "让回答带着证据"]],
-    flow: [["告警事件", "告警"], ["知识检索", "检索"], ["引用证据", "证据"], ["辅助决策", "回答"]], previewTitle: "运维智能助手", previewStatus: "RAG / 流式响应", previewType: "copilot",
-    capabilities: [["故障知识建模", "组织告警事件、服务上下文、知识文档和排查结论，形成可检索结构。"], ["RAG 数据链路", "设计文档解析、语义切分、向量生成、批量写入和版本更新流程。"], ["模型服务适配", "覆盖模型切换、超时重试、会话上下文、流式输出和用户反馈收集。"]],
+  oa: {
+    slug: "oa",
+    title: "企业内部综合管理系统（OA）",
+    shortTitle: "OA",
+    category: "企业业务系统",
+    period: "2024.10—2026.03",
+    role: "Java 全栈开发工程师",
+    brief: "面向公司内部员工和管理人员的综合管理系统，将业务申请、审核、信息查询及处理记录等工作流程进行线上化管理。",
+    problem: "线下申请与审批缺少统一入口，处理进度、角色权限和历史记录难以追踪。系统需要在支持灵活业务流程的同时，保证数据权限、状态流转和审计信息完整。",
+    scope: "业务流程 / 权限 / 前后端功能",
+    technologies: ["Java", "Spring Boot", "MyBatis", "Vue", "JavaScript", "MySQL", "Redis", "JWT", "Element UI"],
+    modules: [
+      ["业务申请", "提供申请创建、草稿、提交、撤回、详情和历史记录查询。"],
+      ["流程审批", "按业务状态驱动待办、审批、驳回和完结，并记录处理意见。"],
+      ["权限管理", "维护用户、角色、菜单和数据权限，控制页面、操作及数据范围。"],
+      ["审计记录", "保存关键操作、状态变化和处理人信息，使业务过程可追踪。"],
+    ],
+    architecture: [
+      ["Vue 前端", "列表、表单、详情与审批工作台，负责交互校验、状态呈现和异常反馈。"],
+      ["业务服务", "Spring Boot 承载申请、审批、权限、查询及状态流转规则。"],
+      ["数据与缓存", "MySQL 保存业务及审计数据，Redis 支撑缓存和会话相关场景。"],
+      ["安全边界", "通过 JWT、角色和数据权限约束访问范围与可执行操作。"],
+    ],
+    flow: [["创建申请", "表单校验"], ["提交审批", "状态流转"], ["权限判断", "角色范围"], ["处理反馈", "结果通知"], ["记录归档", "审计查询"]],
+    responsibilities: [
+      ["需求与模块设计", "参与业务需求梳理，拆分申请、审批、记录和状态等核心对象。"],
+      ["全栈功能开发", "独立完成部分模块的数据表、后端接口、Vue 页面和前后端联调。"],
+      ["流程与审计", "实现提交、审批、状态流转及操作留痕，保证处理过程可查询。"],
+      ["权限控制", "维护用户、角色、菜单和数据权限，处理不同角色的访问边界。"],
+      ["页面与交互", "完成列表、表单、详情和审批页面的分页、校验、状态展示及异常提示。"],
+      ["交付支持", "参与测试、上线发布、使用问题处理和功能维护。"],
+    ],
+    achievements: [
+      ["端到端全栈交付", "覆盖数据模型、服务接口、前端页面和联调验证，形成完整模块交付能力。"],
+      ["流程线上化", "将分散的线下申请和审批转为状态明确、进度可查的线上流程。"],
+      ["权限与审计完善", "通过角色、数据权限和操作记录保障内部业务过程规范可追溯。"],
+    ],
+    previewType: "oa",
   },
 };
 
-function PreviewSurface({ spec }: { spec: EngineeringSpec }) {
-  if (spec.previewType === "pipeline") {
-    return <div className="generic-product-ui generic-pipeline-ui"><div className="generic-ui-sidebar"><span>发布平台</span><b className="selected">发布任务</b><b>运行环境</b><b>制品仓库</b><b>执行历史</b></div><div className="generic-ui-main"><div className="generic-ui-toolbar"><div><small>发布 / 生产环境</small><strong>release-2026.03</strong></div><div className="console-toolbar-actions"><span className="console-pill"><i className="ui-blue" />生产环境</span><em>发布中</em></div></div><div className="release-control-row"><div><span>当前发布</span><strong>第 3 阶段 / 共 4 阶段</strong><small>已运行 02:18 · 预计还需 01:04</small></div><div><span>发布策略</span><strong>灰度发布 10%</strong><small>健康检查通过后扩大流量</small></div><button type="button">查看发布详情 ↗</button></div><div className="pipeline-summary"><div><small>代码提交</small><strong>8f42c1a</strong><span>main · 12 分钟前</span></div><div><small>构建制品</small><strong>application-api:2026.03</strong><span>摘要校验已通过</span></div><div><small>变更范围</small><strong>14 个文件</strong><span>2 位审核人已通过</span></div></div><div className="pipeline-track">{spec.flow.map(([title, label], index) => <div className={`pipeline-stage ${index < 2 ? "done" : index === 2 ? "active" : ""}`} key={title}><i /><strong>{title}</strong><small>{label}</small>{index < spec.flow.length - 1 && <b />}</div>)}</div><div className="generic-ui-columns"><div className="ui-list"><small>执行日志</small><p><i className="ui-green" />制品校验通过 <span>00:12</span></p><p><i className="ui-blue" />目标环境已锁定 <span>00:18</span></p><p><i className="ui-gray" />健康检查等待中 <span>现在</span></p></div><div className="ui-metric"><small>发布健康度</small><strong>92%</strong><div><i style={{ width: "92%" }} /></div><span>回滚入口已保留</span></div></div><div className="pipeline-footer-grid"><div><small>最近发布</small><p><b>release-2026.02</b><span>成功 · 18 分钟</span></p><p><b>release-2026.01</b><span>成功 · 22 分钟</span></p></div><div><small>发布防线</small><p><b>灰度 10%</b><span className="text-green">已就绪</span></p><p><b>自动回滚</b><span className="text-blue">已启用</span></p></div></div></div></div>;
-  }
+function ProductPreview({ spec }: { spec: EngineeringSpec }) {
+  const labels = {
+    platform: ["集群与资源", "应用交付", "服务治理", "监控告警", "智能助手"],
+    pipeline: ["发布任务", "目标环境", "执行通道", "运行日志", "回滚记录"],
+    gateway: ["服务管理", "接口管理", "环境配置", "路由规则", "调用记录"],
+    oa: ["工作台", "我的申请", "待办审批", "权限管理", "审计记录"],
+  }[spec.previewType];
 
-  if (spec.previewType === "observability") {
-    return <div className="generic-product-ui generic-observability-ui"><div className="generic-ui-sidebar observe-sidebar"><span>可观测性</span><b className="selected">总览</b><b>集群</b><b>工作负载</b><b>服务</b><b>告警 <sup>12</sup></b><b>事件</b></div><div className="generic-ui-main"><div className="observe-toolbar"><div><small>平台 / 集群 / 项目</small><strong>服务健康</strong></div><div className="console-toolbar-actions"><span className="console-pill">production-cluster⌄</span><span className="console-pill">近 30 分钟⌄</span></div></div><div className="observe-kpis"><div><small>请求速率</small><strong>1.82k/s</strong><em>较上一时段 +4.8%</em></div><div><small>P95 延迟</small><strong>184 <i>ms</i></strong><em>gateway-service 变慢</em></div><div><small>错误率</small><strong>0.42%</strong><em>下降 0.08%</em></div><div><small>可用性</small><strong>99.96%</strong><em>100+ 服务在线</em></div></div><div className="observe-grid"><div className="observe-chart"><div className="chart-heading"><div><small>请求延迟 / P95</small><strong>184 <em>ms</em></strong></div><span>实时</span></div><div className="chart-lines"><i /><i /><i /><i /></div><div className="chart-bars"><i /><i /><i /><i /><i /><i /><i /><i /><i /><i /><i /><i /><i /><i /><i /><i /></div><span>10:00　　10:10　　10:20　　10:30</span></div><div className="observe-alerts"><div className="panel-heading"><small>告警 / 信号</small><b>12 条待处理</b></div><div><i className="ui-red" /><strong>gateway-service</strong><span>P95 &gt; 180ms · 8 分钟</span><b>严重</b></div><div><i className="ui-orange" /><strong>processing-service</strong><span>指标缺失 · 14 分钟</span><b>警告</b></div><div><i className="ui-green" /><strong>application-api</strong><span>发布后已恢复 · 22 分钟</span><b>已恢复</b></div></div></div><div className="observe-metric-grid"><div className="observe-metric-card"><small>CPU 使用率</small><strong>46.8%</strong><div className="mini-bars"><i /><i /><i /><i /><i /><i /><i /><i /></div><span>集群平均 · 3 个节点</span></div><div className="observe-metric-card"><small>内存使用率</small><strong>63.2%</strong><div className="mini-bars purple"><i /><i /><i /><i /><i /><i /><i /><i /></div><span>工作负载分配 · 稳定</span></div><div className="observe-metric-card"><small>网络吞吐</small><strong>842 <i>MB/s</i></strong><div className="network-line"><i /><i /><i /><i /></div><span>入口 512 · 出口 330</span></div></div><div className="observe-bottom-grid"><div className="observe-services"><div className="panel-heading"><small>服务健康</small><b>3 / 3 正常上报</b></div><div><strong>gateway-service</strong><span>184ms · 99.91%</span><b>降级</b></div><div><strong>processing-service</strong><span>92ms · 99.98%</span><b>健康</b></div><div><strong>application-api</strong><span>61ms · 100%</span><b>健康</b></div></div><div className="observe-trace"><small>链路关联</small><strong>gateway → application → database</strong><div className="trace-line"><i /><i /><i /><i /></div><span>3 个服务 · 1 个故障 · 6 条关联信号</span></div></div><div className="observe-event-grid"><div className="observe-alert-table"><div className="panel-heading"><small>活跃告警规则</small><b>规则组</b></div><p><strong>HighLatencyP95</strong><span>gateway-service</span><b className="status-red">触发中</b></p><p><strong>TargetDown</strong><span>processing-service</span><b className="status-orange">待确认</b></p><p><strong>PodRestartRate</strong><span>application-api</span><b className="status-green">正常</b></p></div><div className="observe-events"><small>最近事件</small><p><i className="ui-blue" />部署已完成 <span>2 分钟前</span></p><p><i className="ui-orange" />副本数量已调整 <span>9 分钟前</span></p><p><i className="ui-gray" />节点心跳已接收 <span>12 分钟前</span></p></div></div><div className="observe-timeline"><span>故障时间线</span><p><i />告警触发 <b>→</b> 指标确认 <b>→</b> 日志定位 <b>→</b> 版本验证 <b>→</b> 修复确认</p></div></div></div>;
-  }
+  return (
+    <div className={`case-product case-product-${spec.previewType}`}>
+      <aside>
+        <strong>{spec.shortTitle}</strong>
+        {labels.map((label, index) => <span className={index === 0 ? "active" : ""} key={label}>{label}</span>)}
+      </aside>
+      <div className="case-product-main">
+        <header><div><small>{spec.category} / production</small><strong>{labels[0]}总览</strong></div><span>运行正常</span></header>
+        <div className="case-kpis">
+          <div><small>核心模块</small><strong>{spec.modules.length}</strong><span>统一管理</span></div>
+          <div><small>执行链路</small><strong>{spec.flow.length}</strong><span>状态可追踪</span></div>
+          <div><small>当前状态</small><strong>健康</strong><span>最近同步：刚刚</span></div>
+        </div>
+        <div className="case-product-grid">
+          <section><small>核心对象</small>{spec.modules.slice(0, 4).map(([title, text]) => <div key={title}><i /><p><strong>{title}</strong><span>{text}</span></p><b>正常</b></div>)}</section>
+          <section className="case-flow-panel"><small>关键链路</small>{spec.flow.map(([title, label], index) => <div key={title}><em>{String(index + 1).padStart(2, "0")}</em><p><strong>{title}</strong><span>{label}</span></p></div>)}</section>
+        </div>
+      </div>
+    </div>
+  );
+}
 
-  return <div className="generic-product-ui generic-copilot-ui"><div className="generic-ui-sidebar"><span>运维助手</span><b className="selected">故障事件</b><b>知识库</b><b>处理流程</b><b>反馈记录</b></div><div className="generic-ui-main"><div className="generic-ui-toolbar"><div><small>故障事件 / GATEWAY-SERVICE</small><strong>智能排障工作台</strong></div><div className="console-toolbar-actions"><span className="console-pill"><i className="ui-red" />P1 / 未关闭</span><em>流式响应</em></div></div><div className="copilot-insight-row"><div><small>判断可信度</small><strong>86%</strong><span>基于证据推断</span></div><div><small>检索到的资料</small><strong>06</strong><span>运行手册 · 历史事件 · 日志</span></div><div><small>下一步建议</small><strong>检查入口流量</strong><span>建议优先执行</span></div></div><div className="copilot-workspace"><div className="copilot-context"><small>故障上下文</small><strong>gateway-service 延迟升高</strong><span><i className="ui-red" /> P1 / 未关闭 · 8 分钟</span><div><small>关联服务</small><b>gateway-service · 已降级</b><b>application-api · 健康</b><b>mesh-ingress · 健康</b></div><div><small>引用资料</small><b>运行手册 / latency-v3</b><b>历史事件 / 2026-02-18</b><b>发布记录 / release-2026.03</b></div></div><div className="copilot-chat"><div className="copilot-chat-head"><span>运维智能助手</span><i>正在生成回答</i></div><div className="chat-bubble user">帮助我判断这次延迟告警的可能原因，并给出排查顺序。</div><div className="chat-bubble assistant"><strong>初步判断</strong><p>当前告警与 gateway-service 的上游响应变慢有关，建议先检查入口流量、最近发布记录和关联服务的 P95 指标。</p><div className="evidence"><span>引用 01 / 运行手册</span><span>引用 02 / 历史事件</span><span>引用 03 / 发布记录</span></div></div><div className="chat-input">继续追问…<b>→</b></div></div></div><div className="copilot-actions"><div><small>建议排查路径</small><p><b>01</b>确认入口流量 <span>→</span> <b>02</b>对比发布前后 <span>→</span> <b>03</b>检查上游依赖 <span>→</span> <b>04</b>执行修复验证</p></div><button>生成排查报告 <span>↗</span></button></div></div></div>;
+function DetailList({ items }: { items: [string, string][] }) {
+  return <div className="ns-capability-list">{items.map(([title, text]) => <article key={title}><span>{title}</span><p>{text}</p><b>↗</b></article>)}</div>;
 }
 
 export function EngineeringView({ spec }: { spec: EngineeringSpec }) {
   return (
     <main className="ns-page">
-      <nav className="ns-nav" aria-label={`${spec.title} 详情导航`}><a href="/#projects">← 返回项目案例</a><span>工程视图 / {spec.subtitle}</span><a href="/resume.pdf" download>下载简历 ↗</a></nav>
-      <header className="ns-hero"><div className="ns-eyebrow"><span>{spec.stage}</span><i /><span>工程能力预览</span></div><div className="ns-hero-grid"><div><h1 className="generic-ns-title">{spec.subtitle}</h1><p>{spec.title}</p></div><div className="ns-hero-copy"><span>{spec.brief}</span><div className="ns-hero-tags"><span>{spec.category}</span><span>{spec.scope}</span></div></div></div><div className="ns-meta-strip">{spec.meta.map(([label, value]) => <div key={label}><span>{label}</span><strong>{value}</strong></div>)}</div></header>
-      <section className="ns-section ns-intro"><div className="ns-section-label">01 / 系统背景</div><div className="ns-intro-grid"><h2>把复杂链路，<br /><em>变成可追踪流程。</em></h2><p>{spec.brief} 这套工程视图用于展示我如何拆分对象、阶段、状态和异常边界，让系统能力可以被理解、验证和持续交付。</p></div></section>
-      <section className="ns-section generic-preview-section"><div className="ns-section-label">02 / {spec.category}</div><div className="ns-section-heading"><h2>{spec.previewTitle}</h2><p>参考成熟云原生产品常见的信息结构制作的工程能力预览，重点展示对象之间的关系、流程状态和问题处理方式。</p></div><div className="generic-preview"><div className="generic-preview-top"><strong>{spec.previewTitle}</strong><span>{spec.previewStatus}</span><i /></div><PreviewSurface spec={spec} /></div></section>
-      <section className="ns-section ns-lifecycle-section"><div className="ns-section-label">03 / 责任边界</div><div className="ns-section-heading"><h2>我负责的<br /><em>工程能力。</em></h2><p>这里展示项目中的核心责任边界，而不是技术名词清单。</p></div><div className="ns-capability-list">{spec.capabilities.map(([title, text]) => <article key={title}><span>{title}</span><p>{text}</p><b>↗</b></article>)}</div></section>
-      <footer className="ns-footer"><a href="/#projects">← 返回全部项目</a><span>{spec.subtitle} / 工程视图</span><a href="/resume.pdf" download>下载 PDF 简历 ↗</a></footer>
+      <nav className="ns-nav" aria-label={`${spec.title} 详情导航`}><Link href="/#projects">← 返回项目案例</Link><span>项目视图 / {spec.shortTitle}</span><a href="/resume.pdf" download>下载简历 ↗</a></nav>
+      <header className="ns-hero">
+        <div className="ns-eyebrow"><span>{spec.period}</span><i /><span>{spec.category}</span></div>
+        <div className="ns-hero-grid"><div><h1 className="generic-ns-title">{spec.shortTitle}</h1><p>{spec.title}</p></div><div className="ns-hero-copy"><span>{spec.brief}</span><div className="ns-hero-tags"><span>{spec.role}</span><span>{spec.scope}</span></div></div></div>
+        <div className="ns-meta-strip"><div><span>项目周期</span><strong>{spec.period}</strong></div><div><span>角色定位</span><strong>{spec.role}</strong></div><div><span>负责范围</span><strong>{spec.scope}</strong></div></div>
+      </header>
+
+      <section className="ns-section ns-intro">
+        <div className="ns-section-label">01 / 项目全貌</div>
+        <div className="ns-intro-grid"><h2>项目解决什么，<br /><em>边界在哪里。</em></h2><div><p>{spec.brief}</p><p className="case-problem"><strong>核心问题：</strong>{spec.problem}</p></div></div>
+        <div className="case-tech-stack">{spec.technologies.map((item) => <span key={item}>{item}</span>)}</div>
+      </section>
+
+      <section className="ns-section">
+        <div className="ns-section-label">02 / 系统架构</div>
+        <div className="ns-section-heading"><h2>从交互入口，<br /><em>到执行基础设施。</em></h2><p>按系统分层展示项目真实边界，说明数据和控制指令如何流转。</p></div>
+        <div className="case-architecture">{spec.architecture.map(([title, text], index) => <article key={title}><span>{String(index + 1).padStart(2, "0")}</span><div><strong>{title}</strong><p>{text}</p></div>{index < spec.architecture.length - 1 && <i>↓</i>}</article>)}</div>
+      </section>
+
+      <section className="ns-section">
+        <div className="ns-section-label">03 / 核心模块</div>
+        <div className="ns-section-heading"><h2>项目由哪些能力，<br /><em>共同构成。</em></h2><p>不把项目压缩成技术名词，而是展示核心业务模块及其职责。</p></div>
+        <div className="case-module-grid">{spec.modules.map(([title, text], index) => <article key={title}><span>{String(index + 1).padStart(2, "0")}</span><strong>{title}</strong><p>{text}</p></article>)}</div>
+      </section>
+
+      <section className="ns-section generic-preview-section">
+        <div className="ns-section-label">04 / 产品与链路</div>
+        <div className="ns-section-heading"><h2>系统如何工作。</h2><p>以产品控制台和关键流程为线索，展示项目对象、执行状态及模块关系。</p></div>
+        <div className="generic-preview"><div className="generic-preview-top"><strong>{spec.title}</strong><span>{spec.period}</span><i /></div><ProductPreview spec={spec} /></div>
+      </section>
+
+      <section className="ns-section ns-lifecycle-section">
+        <div className="ns-section-label">05 / 关键链路</div>
+        <div className="ns-section-heading"><h2>一次业务操作，<br /><em>经过哪些环节。</em></h2><p>从入口到结果回传，呈现项目最重要的端到端链路。</p></div>
+        <div className="ns-lifecycle">{spec.flow.map(([title, label], index) => <div className="ns-lifecycle-step" key={title}><span className="ns-step-index">{String(index + 1).padStart(2, "0")}</span><div className="ns-step-icon"><i /></div><strong>{title}</strong><span>{label}</span>{index < spec.flow.length - 1 && <i className="ns-step-arrow">→</i>}</div>)}</div>
+      </section>
+
+      <section className="ns-section ns-capability-section">
+        <div className="ns-section-label">06 / 责任边界</div>
+        <div className="ns-section-heading"><h2>我具体负责什么。</h2><p>区分项目整体能力与个人工作，避免用平台全部功能代替本人职责。</p></div>
+        <DetailList items={spec.responsibilities} />
+      </section>
+
+      <section className="ns-section ns-capability-section">
+        <div className="ns-section-label">07 / 工程成果</div>
+        <div className="ns-section-heading"><h2>最终沉淀了什么。</h2><p>强调系统形成的能力与工程改进，不虚构未经验证的量化数据。</p></div>
+        <DetailList items={spec.achievements} />
+      </section>
+
+      <footer className="ns-footer"><Link href="/#projects">← 返回全部项目</Link><span>{spec.shortTitle} / 项目视图</span><a href="/resume.pdf" download>下载 PDF 简历 ↗</a></footer>
     </main>
   );
 }
