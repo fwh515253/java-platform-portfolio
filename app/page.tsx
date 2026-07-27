@@ -189,7 +189,7 @@ export default function Home() {
           </div>
 
           <div className="rail-bottom">
-            <a className="rail-button" href="/resume.pdf" download>下载 PDF 简历 <span>↓</span></a>
+            <a className="rail-button" href="/resume.pdf" download="范文豪-Java全栈开发工程师.pdf">下载 PDF 简历 <span>↓</span></a>
             <p>© 2026 / 简历作品集</p>
           </div>
         </div>
@@ -263,7 +263,7 @@ export default function Home() {
           <div className="section-marker"><span>04</span><i /><span>联系</span></div>
           <h2 id="contact-title">联系我</h2>
           <p>求职方向：Java 后端开发、云原生平台开发</p>
-          <div className="contact-actions"><button className="contact-copy" type="button" onClick={() => void copyContact("wh51368230@163.com", "邮箱")}><img className="contact-icon contact-icon-image" src="/contact-email.png" alt="" /><span>wh51368230@163.com</span><small>复制</small></button><button className="contact-copy" type="button" onClick={() => void copyContact("13051368230", "手机号")}><img className="contact-icon contact-icon-image" src="/contact-phone.png" alt="" /><span>13051368230</span><small>复制</small></button><a className="contact-resume" href="/resume.pdf" download>下载简历 <span>↓</span></a></div>
+          <div className="contact-actions"><button className="contact-copy" type="button" onClick={() => void copyContact("wh51368230@163.com", "邮箱")}><img className="contact-icon contact-icon-image" src="/contact-email.png" alt="" /><span>wh51368230@163.com</span><small>复制</small></button><button className="contact-copy" type="button" onClick={() => void copyContact("13051368230", "手机号")}><img className="contact-icon contact-icon-image" src="/contact-phone.png" alt="" /><span>13051368230</span><small>复制</small></button><a className="contact-resume" href="/resume.pdf" download="范文豪-Java全栈开发工程师.pdf">下载简历 <span>↓</span></a></div>
           {copyMessage && <div className="copy-toast" role="status" aria-live="polite"><i />{copyMessage}</div>}
         </section>
 
