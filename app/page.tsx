@@ -17,7 +17,7 @@ const projects = [
     flow: ["资源管理", "应用交付", "服务治理", "监控告警", "AI 辅助运维"],
     category: "平台工程", name: "NativeSphere", subtitle: "企业级云原生平台",
     role: "Java / 全栈研发工程师", scope: "平台控制面 / 可观测性 / AI 运维",
-    challenge: "企业需要在统一平台中完成 Kubernetes 资源与应用交付、服务治理、运行观测和故障处置，并保证平台操作与真实集群状态一致。",
+    challenge: "企业需要在统一平台中完成 Kubernetes 资源与应用交付、服务治理、运行观测和故障处置，并保证平台操作与真实集群状态一致；监控告警智能助手进一步消费资源、指标、事件和日志上下文，通过 RAG 提供可追溯的辅助分析。",
     details: [
       { title: "平台控制面", text: "封装 Kubernetes API，完成资源模型转换、生命周期操作、状态同步、事件日志及异常处理，并串联 Docker 构建与 Harbor 制品交付。" },
       { title: "服务治理与可观测性", text: "接入 Istio 路由与限流策略；将资源模型映射至 Prometheus 指标，关联告警、资源状态、事件和日志形成排障链路。" },
@@ -69,6 +69,20 @@ const projects = [
     ],
     value: "完成从数据模型、服务接口到前端交互的端到端交付，将线下流程转化为具有权限控制和审计能力的线上业务流程。",
     tags: ["Java", "Spring Boot", "Vue", "MySQL", "Redis", "JWT"], tone: "pink",
+  },
+  {
+    number: "05", mark: "C", stage: "2026.04—至今", slug: "cloudops",
+    flow: ["事件接入", "工单生成", "分派流转", "协同处置", "知识沉淀"],
+    category: "独立交付项目", name: "CloudOps", subtitle: "智能工单与协同处置平台",
+    role: "全栈方案设计与实现", scope: "工单流程 / 规则分派 / SLA / AI 辅助",
+    challenge: "监控告警、人工反馈和运维任务分散在不同渠道，缺少统一事件入口、责任分派、处理时限、协作记录和复盘知识。",
+    details: [
+      { title: "事件与工单模型", text: "统一告警事件、人工报障和运维任务，设计工单、处理人、优先级、状态、SLA 和操作时间线等核心对象。" },
+      { title: "流转与协同机制", text: "围绕创建、分派、接单、转派、处理、验证和关闭组织状态流转，并保留评论、附件及操作记录。" },
+      { title: "智能辅助", text: "结合历史工单与知识库，为工单分类、相似问题检索、处置建议和复盘摘要提供辅助能力。" },
+    ],
+    value: "形成事件接入、责任分派、SLA 管理、协同处置、过程审计与知识复用的完整闭环，体现复杂业务建模、全栈交付及 AI 与实际工作流结合的能力。",
+    tags: ["Java", "Spring Boot", "Vue", "MySQL", "Redis", "Workflow", "RAG"], tone: "cyan",
   },
 ];
 
@@ -235,7 +249,7 @@ export default function Home() {
           <div className="section-marker"><span>02</span><i /><span>精选项目</span></div>
           <div className="section-heading project-heading"><h2 id="projects-title">项目案例</h2><p>每个项目按四层展开：项目定位、负责边界、关键工程动作和最终价值，让贡献不再停留在技术名词。</p></div>
           <div className="project-index" aria-label="项目索引"><span>项目索引</span><div>{projects.map((project) => <a className={activeCase === project.slug ? "is-active" : ""} href={`#case-${project.slug}`} key={project.slug}>{project.name}</a>)}</div></div>
-          <div className="project-stack">{projects.map((project) => <article id={`case-${project.slug}`} className={`project-card project-${project.tone} reveal-item`} key={project.number}><div className="project-detail"><div className="project-name-line"><span>{project.category}</span><span>{project.stage}</span></div><div className="project-title-line"><h3>{project.name}</h3><a className="project-detail-link" href={`/projects/${project.slug}`}>查看工程视图 <span>↗</span></a></div><h4>{project.subtitle}</h4><div className="project-facts"><div><span>角色定位</span><strong>{project.role}</strong></div><div><span>负责范围</span><strong>{project.scope}</strong></div></div><div className="project-flow" aria-label={`${project.name} 工程链路`}>{project.flow.map((step, index) => <div className="project-flow-step" key={step}><span>{String(index + 1).padStart(2, "0")}</span><strong>{step}</strong>{index < project.flow.length - 1 && <i aria-hidden="true" />}</div>)}</div><div className="detail-block"><span className="detail-label">问题边界</span><p>{project.challenge}</p></div><div className="detail-block"><span className="detail-label">关键工程动作</span><div className="work-grid">{project.details.map((detail, index) => <div className="work-item" key={detail.title}><span>{String(index + 1).padStart(2, "0")}</span><div><h5>{detail.title}</h5><p>{detail.text}</p></div></div>)}</div></div><div className="project-value"><span className="detail-label">工程价值</span><p>{project.value}</p></div><div className="project-tags">{project.tags.map((tag) => <span key={tag}>{tag}</span>)}</div></div></article>)}</div>
+          <div className="project-stack">{projects.map((project) => <article id={`case-${project.slug}`} className={`project-card project-${project.tone} reveal-item`} key={project.number}><div className="project-detail"><div className="project-name-line"><span>{project.category}</span><span>{project.stage}</span></div><div className="project-title-line"><h3>{project.name}</h3><a className="project-detail-link" href={`/projects/${project.slug}`}>查看工程视图 <span>↗</span></a></div><h4>{project.subtitle}</h4><div className="project-facts"><div><span>角色定位</span><strong>{project.role}</strong></div><div><span>负责范围</span><strong>{project.scope}</strong></div></div>{project.slug === "nativesphere" && <div className="project-subsystem-links" aria-label="NativeSphere 重点子系统"><span>重点子系统</span><a href="/projects/nativesphere/observability"><b>监控与告警系统</b><small>资源、指标、告警、事件与日志关联 →</small></a><a className="ai-link" href="/projects/nativesphere/ai-ops"><b>监控告警智能助手</b><small>告警上下文、RAG 检索与辅助处置 →</small></a></div>}<div className="project-flow" aria-label={`${project.name} 工程链路`}>{project.flow.map((step, index) => <div className="project-flow-step" key={step}><span>{String(index + 1).padStart(2, "0")}</span><strong>{step}</strong>{index < project.flow.length - 1 && <i aria-hidden="true" />}</div>)}</div><div className="detail-block"><span className="detail-label">问题边界</span><p>{project.challenge}</p></div><div className="detail-block"><span className="detail-label">关键工程动作</span><div className="work-grid">{project.details.map((detail, index) => <div className="work-item" key={detail.title}><span>{String(index + 1).padStart(2, "0")}</span><div><h5>{detail.title}</h5><p>{detail.text}</p></div></div>)}</div></div><div className="project-value"><span className="detail-label">工程价值</span><p>{project.value}</p></div><div className="project-tags">{project.tags.map((tag) => <span key={tag}>{tag}</span>)}</div></div></article>)}</div>
         </section>
 
         <section className="content-section experience-section" id="experience" aria-labelledby="experience-title">
@@ -249,7 +263,7 @@ export default function Home() {
           <div className="section-marker"><span>04</span><i /><span>联系</span></div>
           <h2 id="contact-title">联系我</h2>
           <p>求职方向：Java 后端开发、云原生平台开发</p>
-          <div className="contact-actions"><button className="contact-copy" type="button" onClick={() => void copyContact("wh5136823@163.com", "邮箱")}><img className="contact-icon contact-icon-image" src="/contact-email.png" alt="" /><span>wh5136823@163.com</span><small>复制</small></button><button className="contact-copy" type="button" onClick={() => void copyContact("13051368230", "手机号")}><img className="contact-icon contact-icon-image" src="/contact-phone.png" alt="" /><span>13051368230</span><small>复制</small></button><a className="contact-resume" href="/resume.pdf" download>下载简历 <span>↓</span></a></div>
+          <div className="contact-actions"><button className="contact-copy" type="button" onClick={() => void copyContact("wh51368230@163.com", "邮箱")}><img className="contact-icon contact-icon-image" src="/contact-email.png" alt="" /><span>wh51368230@163.com</span><small>复制</small></button><button className="contact-copy" type="button" onClick={() => void copyContact("13051368230", "手机号")}><img className="contact-icon contact-icon-image" src="/contact-phone.png" alt="" /><span>13051368230</span><small>复制</small></button><a className="contact-resume" href="/resume.pdf" download>下载简历 <span>↓</span></a></div>
           {copyMessage && <div className="copy-toast" role="status" aria-live="polite"><i />{copyMessage}</div>}
         </section>
 

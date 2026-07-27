@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import "./project-views.css";
 
 export const metadata: Metadata = {
   title: "Java 后端开发工程师 | 云原生平台研发",

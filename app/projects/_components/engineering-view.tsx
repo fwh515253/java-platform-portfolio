@@ -1,4 +1,6 @@
 import Link from "next/link";
+import { ProjectCapabilityView } from "./project-capability-views";
+import { AnimatedCapabilityCharts } from "./animated-capability-charts";
 
 export type EngineeringSpec = {
   slug: string;
@@ -177,34 +179,65 @@ export const engineeringSpecs: Record<string, EngineeringSpec> = {
   },
 };
 
-function ProductPreview({ spec }: { spec: EngineeringSpec }) {
-  const labels = {
-    platform: ["集群与资源", "应用交付", "服务治理", "监控告警", "智能助手"],
-    pipeline: ["发布任务", "目标环境", "执行通道", "运行日志", "回滚记录"],
-    gateway: ["服务管理", "接口管理", "环境配置", "路由规则", "调用记录"],
-    oa: ["工作台", "我的申请", "待办审批", "权限管理", "审计记录"],
-  }[spec.previewType];
-
-  return (
-    <div className={`case-product case-product-${spec.previewType}`}>
-      <aside>
-        <strong>{spec.shortTitle}</strong>
-        {labels.map((label, index) => <span className={index === 0 ? "active" : ""} key={label}>{label}</span>)}
-      </aside>
-      <div className="case-product-main">
-        <header><div><small>{spec.category} / production</small><strong>{labels[0]}总览</strong></div><span>运行正常</span></header>
-        <div className="case-kpis">
-          <div><small>核心模块</small><strong>{spec.modules.length}</strong><span>统一管理</span></div>
-          <div><small>执行链路</small><strong>{spec.flow.length}</strong><span>状态可追踪</span></div>
-          <div><small>当前状态</small><strong>健康</strong><span>最近同步：刚刚</span></div>
-        </div>
-        <div className="case-product-grid">
-          <section><small>核心对象</small>{spec.modules.slice(0, 4).map(([title, text]) => <div key={title}><i /><p><strong>{title}</strong><span>{text}</span></p><b>正常</b></div>)}</section>
-          <section className="case-flow-panel"><small>关键链路</small>{spec.flow.map(([title, label], index) => <div key={title}><em>{String(index + 1).padStart(2, "0")}</em><p><strong>{title}</strong><span>{label}</span></p></div>)}</section>
+export function LegacyProductPreview({ spec }: { spec: EngineeringSpec }) {
+  if (spec.previewType === "platform") {
+    return <div className="native-console">
+      <div className="native-topbar"><strong>NativeSphere</strong><span>cluster-prod / overview</span><b><i /> 系统健康</b></div>
+      <div className="native-body">
+        <aside><small>平台能力</small><span className="active">工作空间</span><span>集群资源</span><span>应用负载</span><span>服务治理</span><span>监控告警</span><span>AI 助手</span></aside>
+        <div className="native-canvas">
+          <header><div><small>集群控制面</small><strong>生产集群资源拓扑</strong></div><span>最近同步 12 秒前</span></header>
+          <div className="native-summary"><div><span>集群</span><strong>03</strong><small>全部可用</small></div><div><span>工作负载</span><strong>128</strong><small>124 运行中</small></div><div><span>告警</span><strong>07</strong><small>2 条待处理</small></div><div><span>服务治理</span><strong>18</strong><small>策略已生效</small></div></div>
+          <div className="native-map">
+            <section className="native-resource-tree"><small>KUBERNETES RESOURCE GRAPH</small><div className="native-node root"><b>K8s API</b><span>统一资源适配</span></div><div className="native-branches"><div><b>Workloads</b><span>Deployments · Pods</span></div><div><b>Network</b><span>Service · Ingress</span></div><div><b>Storage</b><span>PVC · StorageClass</span></div></div><div className="native-runtime"><span>状态同步</span><i /><span>事件 / 日志</span><i /><span>异常校验</span></div></section>
+            <section className="native-signal"><small>OBSERVABILITY &amp; AI</small><div><span>Prometheus</span><strong>指标映射</strong><b>正常</b></div><div><span>Alert Center</span><strong>7 条活跃告警</strong><b className="warn">关注</b></div><div><span>Ops Assistant</span><strong>上下文已聚合</strong><b>RAG 就绪</b></div><p>资源状态 → 指标 → 告警 → 日志 → 知识检索 → 处置建议</p></section>
+          </div>
         </div>
       </div>
+    </div>;
+  }
+
+  if (spec.previewType === "pipeline") {
+    return <div className="release-board">
+      <header><div><small>RELEASE / 2026.03.18</small><strong>application-api · production</strong></div><span className="release-running"><i /> 发布执行中</span></header>
+      <div className="release-object-row"><div><small>应用版本</small><strong>v2.8.0</strong><span>commit 8f42c1a</span></div><div><small>镜像制品</small><strong>app-api:2.8.0</strong><span>Harbor 已校验</span></div><div><small>目标环境</small><strong>production</strong><span>cluster-main</span></div><div><small>发布批次</small><strong>#RF-1842</strong><span>创建人：范文豪</span></div></div>
+      <div className="release-router"><small>执行方式由发布策略选择</small><div className="release-lanes">
+        <section><div className="lane-head"><b>Kubernetes 直接发布</b><span>当前通道</span></div><div className="lane-steps"><p className="done"><i />资源生成<em>完成</em></p><p className="done"><i />配置下发<em>完成</em></p><p className="active"><i />状态回读<em>执行中</em></p><p><i />结果确认<em>等待</em></p></div></section>
+        <section><div className="lane-head"><b>Jenkins Pipeline</b><span>可选通道</span></div><div className="lane-steps"><p><i />参数组装<em>READY</em></p><p><i />Job 触发<em>READY</em></p><p><i />日志回传<em>READY</em></p><p><i />结果同步<em>READY</em></p></div></section>
+      </div></div>
+      <footer><div><small>执行日志</small><p><i />14:32:08　deployment/application-api configured</p><p><i />14:32:16　waiting for rollout status...</p></div><div><small>恢复能力</small><span>失败重试</span><span>状态校验</span><span>版本回滚</span></div></footer>
+    </div>;
+  }
+
+  if (spec.previewType === "gateway") {
+    return <div className="gateway-map">
+      <header><div><small>BPAAS / SERVICE ACCESS</small><strong>服务接入与网关配置链路</strong></div><span>配置版本 v34</span></header>
+      <div className="gateway-topology">
+        <div className="gateway-zone consumers"><small>调用方</small><div><b>业务系统 A</b><span>internal-client</span></div><div><b>业务系统 B</b><span>open-client</span></div></div>
+        <i className="gateway-arrow">→</i>
+        <div className="gateway-zone management"><small>BPAAS 管理面</small><div className="gateway-models"><span>服务</span><span>接口</span><span>环境</span><span>路由</span></div><p>领域校验 · 关联管理 · 配置版本 · 状态维护</p></div>
+        <i className="gateway-arrow">→</i>
+        <div className="gateway-zone execution"><small>网关执行模块</small><div><b>Route Config</b><span>配置下发</span></div><div><b>Runtime Status</b><span>结果回读</span></div></div>
+        <i className="gateway-arrow">→</i>
+        <div className="gateway-zone upstream"><small>上游服务</small><div><b>user-service</b><span>prod / healthy</span></div><div><b>order-service</b><span>prod / healthy</span></div></div>
+      </div>
+      <div className="gateway-table"><div className="gateway-table-head"><span>服务 / 接口</span><span>目标环境</span><span>路由规则</span><span>下发状态</span></div><div><strong>user-service /api/users/**</strong><span>prod-cluster</span><span>StripPrefix=1</span><b>已同步</b></div><div><strong>order-service /api/orders/**</strong><span>prod-cluster</span><span>RateLimit=200/s</span><b>已同步</b></div><div><strong>report-service /api/report/**</strong><span>staging</span><span>AuthRequired</span><b className="waiting">待验证</b></div></div>
+      <footer><span>本人边界</span><p>负责管理面领域模型、接入接口及与网关执行模块的配置和状态协同；不将网关内核实现归为个人职责。</p></footer>
+    </div>;
+  }
+
+  return <div className="oa-workbench">
+    <aside><strong>协同办公</strong><span className="active">工作台</span><span>我的申请</span><span>待办审批 <b>8</b></span><span>流程查询</span><span>组织权限</span><span>审计日志</span></aside>
+    <div className="oa-main">
+      <header><div><small>上午好，范文豪</small><strong>业务协同工作台</strong></div><button type="button">＋ 发起申请</button></header>
+      <div className="oa-kpis"><div><span>我的待办</span><strong>08</strong><small>2 项即将超时</small></div><div><span>处理中</span><strong>12</strong><small>状态持续更新</small></div><div><span>本月办结</span><strong>36</strong><small>全部留痕</small></div></div>
+      <div className="oa-grid">
+        <section className="oa-tasks"><div className="oa-panel-head"><strong>待办审批</strong><span>查看全部 →</span></div><div><i className="urgent" /><p><b>项目资源申请</b><span>申请人：张三 · 15 分钟前</span></p><em>待审批</em></div><div><i /><p><b>用章申请</b><span>申请人：李四 · 1 小时前</span></p><em>待审批</em></div><div><i /><p><b>出差申请</b><span>申请人：王五 · 昨天</span></p><em>待审批</em></div></section>
+        <section className="oa-flow"><div className="oa-panel-head"><strong>流程进度</strong><span>#OA-20260318</span></div><div className="oa-flow-line"><p className="done"><i />提交申请<span>09:20</span></p><p className="done"><i />直属审批<span>10:05</span></p><p className="active"><i />部门复核<span>处理中</span></p><p><i />流程归档<span>等待</span></p></div></section>
+      </div>
+      <div className="oa-permission"><div><small>当前角色</small><strong>研发人员</strong></div><span>页面权限 12</span><span>操作权限 26</span><span>数据范围：本人及所在部门</span><b>JWT 会话有效</b></div>
     </div>
-  );
+  </div>;
 }
 
 function DetailList({ items }: { items: [string, string][] }) {
@@ -213,7 +246,7 @@ function DetailList({ items }: { items: [string, string][] }) {
 
 export function EngineeringView({ spec }: { spec: EngineeringSpec }) {
   return (
-    <main className="ns-page">
+    <main className={`ns-page project-case project-case-${spec.previewType}`}>
       <nav className="ns-nav" aria-label={`${spec.title} 详情导航`}><Link href="/#projects">← 返回项目案例</Link><span>项目视图 / {spec.shortTitle}</span><a href="/resume.pdf" download>下载简历 ↗</a></nav>
       <header className="ns-hero">
         <div className="ns-eyebrow"><span>{spec.period}</span><i /><span>{spec.category}</span></div>
@@ -240,9 +273,10 @@ export function EngineeringView({ spec }: { spec: EngineeringSpec }) {
       </section>
 
       <section className="ns-section generic-preview-section">
-        <div className="ns-section-label">04 / 产品与链路</div>
-        <div className="ns-section-heading"><h2>系统如何工作。</h2><p>以产品控制台和关键流程为线索，展示项目对象、执行状态及模块关系。</p></div>
-        <div className="generic-preview"><div className="generic-preview-top"><strong>{spec.title}</strong><span>{spec.period}</span><i /></div><ProductPreview spec={spec} /></div>
+        <div className="ns-section-label">04 / 能力模型与实现机制</div>
+        <div className="ns-section-heading"><h2>项目究竟能做什么。</h2><p>从能力范围、核心对象和执行机制展开项目，并明确平台整体能力与个人责任边界。</p></div>
+        <div className="generic-preview capability-preview"><div className="generic-preview-top"><strong>{spec.title}</strong><span>CAPABILITY VIEW</span><i /></div><ProjectCapabilityView type={spec.previewType} /></div>
+        <AnimatedCapabilityCharts type={spec.previewType} />
       </section>
 
       <section className="ns-section ns-lifecycle-section">
