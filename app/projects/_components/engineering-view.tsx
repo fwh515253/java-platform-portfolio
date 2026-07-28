@@ -247,7 +247,7 @@ function DetailList({ items }: { items: [string, string][] }) {
 export function EngineeringView({ spec }: { spec: EngineeringSpec }) {
   return (
     <main className={`ns-page project-case project-case-${spec.previewType}`}>
-      <nav className="ns-nav" aria-label={`${spec.title} 详情导航`}><Link href="/#projects">← 返回项目案例</Link><span>项目视图 / {spec.shortTitle}</span><a href="/resume.pdf" download="范文豪-Java全栈开发工程师.pdf">下载简历 ↗</a></nav>
+      <nav className="ns-nav" aria-label={`${spec.title} 详情导航`}><Link href="/#projects">← 返回项目案例</Link><span>项目视图 / {spec.shortTitle}</span><a href="/范文豪-Java全栈开发工程师.pdf" download>下载简历 ↗</a></nav>
       <header className="ns-hero">
         <div className="ns-eyebrow"><span>{spec.period}</span><i /><span>{spec.category}</span></div>
         <div className="ns-hero-grid"><div><h1 className="generic-ns-title">{spec.shortTitle}</h1><p>{spec.title}</p></div><div className="ns-hero-copy"><span>{spec.brief}</span><div className="ns-hero-tags"><span>{spec.role}</span><span>{spec.scope}</span></div></div></div>
@@ -297,7 +297,7 @@ export function EngineeringView({ spec }: { spec: EngineeringSpec }) {
         <DetailList items={spec.achievements} />
       </section>
 
-      <footer className="ns-footer"><Link href="/#projects">← 返回全部项目</Link><span>{spec.shortTitle} / 项目视图</span><a href="/resume.pdf" download="范文豪-Java全栈开发工程师.pdf">下载 PDF 简历 ↗</a></footer>
+      <footer className="ns-footer"><Link href="/#projects">← 返回全部项目</Link><span>{spec.shortTitle} / 项目视图</span><a href="/范文豪-Java全栈开发工程师.pdf" download>下载 PDF 简历 ↗</a></footer>
     </main>
   );
 }

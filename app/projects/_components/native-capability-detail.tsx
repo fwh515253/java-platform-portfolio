@@ -73,6 +73,6 @@ export function NativeCapabilityDetail({ spec }: { spec: NativeCapabilityDetailS
       <div className="native-detail-heading"><span>{spec.visualType ? "07" : "06"} / 平台价值</span><h2>整合后形成的能力</h2></div>
       <div className="native-detail-value">{spec.value.map(item=><p key={item}>{item}</p>)}</div>
     </section>
-    <footer><Link href="/projects/nativesphere">← 返回 NativeSphere</Link><span>{spec.title}</span><Link href="/resume.pdf">查看简历 →</Link></footer>
+    <footer><Link href="/projects/nativesphere">← 返回 NativeSphere</Link><span>{spec.title}</span><Link href="/范文豪-Java全栈开发工程师.pdf">查看简历 →</Link></footer>
   </main>;
 }
