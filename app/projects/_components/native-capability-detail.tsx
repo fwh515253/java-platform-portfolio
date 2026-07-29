@@ -20,11 +20,12 @@ function NativeCapabilityVisual({ type }: { type: "monitoring" | "assistant" }) 
     return <div className="monitoring-product-view">
       <header><div><span>NativeSphere / 可观测性</span><strong>集群与工作负载监控中心</strong></div><p><b>生产集群</b><b>近 30 分钟</b></p></header>
       <div className="monitoring-scope"><span className="active">平台总览</span><span>集群</span><span>节点</span><span>工作负载</span><span>Pod</span><span>服务</span><span>告警规则</span></div>
-      <div className="monitoring-kpis"><article><span>集群资源</span><strong>3 个集群</strong><p>资源状态统一同步</p></article><article><span>活跃告警</span><strong className="alert">7 条</strong><p>严重 2 · 警告 5</p></article><article><span>监控目标</span><strong>正常</strong><p>指标采集链路可用</p></article><article><span>告警恢复</span><strong>4 条</strong><p>保留恢复时间与上下文</p></article></div>
+      <div className="monitoring-kpis"><article><div className="monitoring-kpi-head"><span>集群资源</span><i className="monitor-icon icon-cluster" /></div><strong>3 个集群</strong><p>资源状态统一同步</p></article><article><div className="monitoring-kpi-head"><span>活跃告警</span><i className="monitor-icon icon-alert" /></div><strong className="alert">7 条</strong><p>严重 2 · 警告 5</p></article><article><div className="monitoring-kpi-head"><span>监控目标</span><i className="monitor-icon icon-metric" /></div><strong>正常</strong><p>指标采集链路可用</p></article><article><div className="monitoring-kpi-head"><span>告警恢复</span><i className="monitor-icon icon-recovery" /></div><strong>4 条</strong><p>保留恢复时间与上下文</p></article></div>
       <div className="monitoring-main-grid">
-        <section className="metric-chart"><div><span>工作负载 CPU 使用趋势</span><b>Prometheus / rate</b></div><div className="metric-lines"><i /><i /><i /><i /><i /><i /><i /><i /><i /><i /><i /><i /></div><footer><span>14:00</span><span>14:10</span><span>14:20</span><span>14:30</span></footer></section>
+        <section className="metric-chart"><div><span>工作负载 CPU 使用趋势</span><b><i className="chart-live-dot" /> Prometheus / rate</b></div><div className="metric-lines"><i /><i /><i /><i /><i /><i /><i /><i /><i /><i /><i /><i /></div><footer><span>14:00</span><span>14:10</span><span>14:20</span><span>14:30</span></footer></section>
         <section className="active-alerts"><div><span>活跃告警</span><b>按资源定位</b></div><article><i className="critical" /><p><strong>PodRestartRate</strong><span>application-api / pod-7d8f</span></p><em>严重</em></article><article><i className="warning" /><p><strong>WorkloadCpuHigh</strong><span>gateway-service / deployment</span></p><em>警告</em></article><article><i /><p><strong>TargetMissing</strong><span>processing-service / service</span></p><em>待确认</em></article></section>
       </div>
+      <div className="monitoring-metric-mosaic"><article><span>CPU 使用率</span><strong>68.4%</strong><b>+8.2%</b><i><em style={{width:"68%"}} /></i></article><article><span>内存使用率</span><strong>52.1%</strong><b className="stable">稳定</b><i><em style={{width:"52%"}} /></i></article><article><span>请求速率</span><strong>1.28k/s</strong><b>+12.6%</b><i><em style={{width:"74%"}} /></i></article><article><span>P95 延迟</span><strong>184ms</strong><b className="warning-text">关注</b><i><em style={{width:"42%"}} /></i></article><article><span>错误率</span><strong>0.18%</strong><b className="stable">正常</b><i><em style={{width:"18%"}} /></i></article><article><span>重启次数</span><strong>03</strong><b className="critical-text">+2</b><i><em style={{width:"31%"}} /></i></article></div>
       <div className="signal-correlation"><span>一次告警的定位上下文</span><div><b>告警事件</b><i>→</i><b>关联资源</b><i>→</i><b>指标趋势</b><i>→</i><b>K8s 事件</b><i>→</i><b>Pod 日志</b><i>→</i><b>恢复验证</b></div></div>
       <p className="view-caption">示意视图用于展示项目真实的信息组织方式：监控对象复用平台资源身份，告警能够下钻到资源、指标、事件和日志。</p>
     </div>;
@@ -41,7 +42,7 @@ function NativeCapabilityVisual({ type }: { type: "monitoring" | "assistant" }) 
 }
 
 export function NativeCapabilityDetail({ spec }: { spec: NativeCapabilityDetailSpec }) {
-  return <main className={`native-detail native-detail-${spec.code}`}>
+  return <main className={`native-detail liquid-native-detail native-detail-${spec.code}`}>
     <nav><Link href="/projects/nativesphere">← NativeSphere 平台总览</Link><span>{spec.code.toUpperCase()} / CAPABILITY DOMAIN</span><Link href="/#projects">全部项目</Link></nav>
     <header>
       <div><span>{spec.period}</span><small>NativeSphere 子系统</small></div>

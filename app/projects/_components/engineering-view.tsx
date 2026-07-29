@@ -246,7 +246,7 @@ function DetailList({ items }: { items: [string, string][] }) {
 
 export function EngineeringView({ spec }: { spec: EngineeringSpec }) {
   return (
-    <main className={`ns-page project-case project-case-${spec.previewType}`}>
+    <main className={`ns-page liquid-engineering-page project-case project-case-${spec.previewType}`}>
       <nav className="ns-nav" aria-label={`${spec.title} 详情导航`}><Link href="/#projects">← 返回项目案例</Link><span>项目视图 / {spec.shortTitle}</span><a href="/范文豪-Java全栈开发工程师.pdf" download>下载简历 ↗</a></nav>
       <header className="ns-hero">
         <div className="ns-eyebrow"><span>{spec.period}</span><i /><span>{spec.category}</span></div>

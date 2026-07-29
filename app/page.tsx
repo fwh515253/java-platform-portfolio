@@ -2,6 +2,8 @@
 
 import { useEffect, useState } from "react";
 
+const resumePath = "/范文豪-Java全栈开发工程师.pdf";
+
 const skills = [
   "Java / Spring Boot",
   "Docker / Harbor",
@@ -9,6 +11,13 @@ const skills = [
   "Prometheus / Grafana",
   "RAG / Milvus",
   "Go（工程辅助）",
+];
+
+const capabilities = [
+  { code: "01", title: "Java 后端", text: "业务建模、接口设计、状态流转、数据处理与异常治理。", tags: ["Java", "Spring Boot", "MyBatis"] },
+  { code: "02", title: "云原生平台", text: "应用发布、镜像制品、集群资源、服务治理和运行状态管理。", tags: ["Docker", "Kubernetes", "Istio"] },
+  { code: "03", title: "可观测性", text: "指标查询、监控看板、告警规则、事件关联和线上问题定位。", tags: ["Prometheus", "Grafana", "PromQL"] },
+  { code: "04", title: "AI 应用工程化", text: "文档解析、向量检索、知识库问答、证据引用和流式响应。", tags: ["RAG", "Milvus", "SSE"] },
 ];
 
 const projects = [
@@ -25,7 +34,7 @@ const projects = [
       { title: "全栈交付", text: "参与 Vue 管理端页面、接口联调、测试发布、部署排障和文档沉淀，覆盖功能从设计到运行验证的完整过程。" },
     ],
     value: "形成资源接管、制品交付、应用部署、服务治理、运行观测与事件处置的一体化闭环，降低研发和运维团队使用云原生基础设施的复杂度。",
-    tags: ["Java", "Vue", "Kubernetes", "Istio", "Prometheus", "RAG"], tone: "cyan",
+    tags: ["Java", "Vue", "Kubernetes", "Istio", "Prometheus", "RAG"], tone: "blue",
   },
   {
     number: "02", mark: "R", stage: "2024.06—2026.03", slug: "release-flow",
@@ -40,7 +49,7 @@ const projects = [
       { title: "发布控制台", text: "参与 Vue 端发布创建、执行方式选择、环境配置、进度日志、重试与回滚页面及接口联调。" },
     ],
     value: "将 Kubernetes 与 Jenkins 两类发布方式纳入同一控制面，建立版本、制品、环境、任务和结果的端到端追溯关系。",
-    tags: ["Spring Boot", "Vue", "Kubernetes", "Jenkins", "Pipeline"], tone: "violet",
+    tags: ["Spring Boot", "Vue", "Kubernetes", "Jenkins", "Pipeline"], tone: "lilac",
   },
   {
     number: "03", mark: "B", stage: "2024.10—2026.03", slug: "bpaas",
@@ -54,7 +63,7 @@ const projects = [
       { title: "运行支持", text: "维护调用记录和运行信息，配合网关研发完成策略验证、系统联调、问题定位及版本发布。" },
     ],
     value: "形成统一的服务接入和配置管理流程，提升内部系统网关接入的规范性、可维护性与问题追溯能力。",
-    tags: ["Java", "Spring Cloud", "MyBatis", "MySQL", "Redis", "API Gateway"], tone: "orange",
+    tags: ["Java", "Spring Cloud", "MyBatis", "MySQL", "Redis", "API Gateway"], tone: "peach",
   },
   {
     number: "04", mark: "O", stage: "2024.10—2026.03", slug: "oa",
@@ -68,12 +77,12 @@ const projects = [
       { title: "权限与体验", text: "维护用户、角色、菜单及数据权限，完成列表、表单、详情和审批页面的交互及异常提示。" },
     ],
     value: "完成从数据模型、服务接口到前端交互的端到端交付，将线下流程转化为具有权限控制和审计能力的线上业务流程。",
-    tags: ["Java", "Spring Boot", "Vue", "MySQL", "Redis", "JWT"], tone: "pink",
+    tags: ["Java", "Spring Boot", "Vue", "MySQL", "Redis", "JWT"], tone: "rose",
   },
   {
     number: "05", mark: "C", stage: "2026.04—至今", slug: "cloudops",
     flow: ["事件接入", "工单生成", "分派流转", "协同处置", "知识沉淀"],
-    category: "独立交付项目", name: "CloudOps", subtitle: "智能工单与协同处置平台",
+    category: "智能运维", name: "CloudOps", subtitle: "智能工单与协同处置平台",
     role: "全栈方案设计与实现", scope: "工单流程 / 规则分派 / SLA / AI 辅助",
     challenge: "监控告警、人工反馈和运维任务分散在不同渠道，缺少统一事件入口、责任分派、处理时限、协作记录和复盘知识。",
     details: [
@@ -82,57 +91,21 @@ const projects = [
       { title: "智能辅助", text: "结合历史工单与知识库，为工单分类、相似问题检索、处置建议和复盘摘要提供辅助能力。" },
     ],
     value: "形成事件接入、责任分派、SLA 管理、协同处置、过程审计与知识复用的完整闭环，体现复杂业务建模、全栈交付及 AI 与实际工作流结合的能力。",
-    tags: ["Java", "Spring Boot", "Vue", "MySQL", "Redis", "Workflow", "RAG"], tone: "cyan",
+    tags: ["Java", "Spring Boot", "Vue", "MySQL", "Redis", "Workflow", "RAG"], tone: "mint",
   },
-];
-
-const capabilityItems = [
-  { label: "系统设计", title: "系统设计", text: "从业务需求出发，拆解对象、状态、接口边界和模块关系。" },
-  { label: "平台整合", title: "平台整合", text: "把后端服务与运行基础设施连接起来，形成统一、可使用的业务能力。" },
-  { label: "工程交付", title: "工程交付", text: "持续跟进实现、联调、验证、上线和问题维护，关注最终运行结果。" },
-  { label: "技术延展", title: "技术延展", text: "把新技术转化为可验证、可落地的工程方案，扩展系统解决问题的边界。" },
 ];
 
 export default function Home() {
   const [copyMessage, setCopyMessage] = useState("");
-  const [scrollProgress, setScrollProgress] = useState(0);
-  const [showTopButton, setShowTopButton] = useState(false);
   const [activeCase, setActiveCase] = useState(projects[0].slug);
 
   useEffect(() => {
-    const updateScrollState = () => {
-      const scrollableHeight = document.documentElement.scrollHeight - window.innerHeight;
-      const progress = scrollableHeight > 0 ? (window.scrollY / scrollableHeight) * 100 : 0;
-      setScrollProgress(Math.min(100, Math.max(0, progress)));
-      setShowTopButton(window.scrollY > 520);
-    };
-
-    updateScrollState();
-    window.addEventListener("scroll", updateScrollState, { passive: true });
-    return () => window.removeEventListener("scroll", updateScrollState);
-  }, []);
-
-  useEffect(() => {
-    const projectCards = Array.from(document.querySelectorAll<HTMLElement>(".project-card[id^='case-']"));
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) setActiveCase(entry.target.id.replace("case-", ""));
-      });
-    }, { rootMargin: "-18% 0px -62% 0px", threshold: 0 });
-
-    projectCards.forEach((card) => observer.observe(card));
-    return () => observer.disconnect();
-  }, []);
-
-  useEffect(() => {
-    const revealItems = Array.from(document.querySelectorAll<HTMLElement>(".reveal-item"));
+    const revealItems = Array.from(document.querySelectorAll<HTMLElement>(".liquid-reveal"));
     const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-
     if (reduceMotion) {
       revealItems.forEach((item) => item.classList.add("is-visible"));
       return;
     }
-
     const observer = new IntersectionObserver((entries) => {
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
@@ -140,13 +113,22 @@ export default function Home() {
           observer.unobserve(entry.target);
         }
       });
-    }, { threshold: 0.12, rootMargin: "0px 0px -36px" });
-
+    }, { threshold: 0.08, rootMargin: "0px 0px -42px" });
     revealItems.forEach((item, index) => {
-      item.style.setProperty("--reveal-delay", `${Math.min(index % 5, 4) * 70}ms`);
+      item.style.setProperty("--reveal-delay", `${Math.min(index % 6, 5) * 70}ms`);
       observer.observe(item);
     });
+    return () => observer.disconnect();
+  }, []);
 
+  useEffect(() => {
+    const cards = Array.from(document.querySelectorAll<HTMLElement>(".liquid-project-card[id^='case-']"));
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) setActiveCase(entry.target.id.replace("case-", ""));
+      });
+    }, { rootMargin: "-22% 0px -66% 0px", threshold: 0 });
+    cards.forEach((card) => observer.observe(card));
     return () => observer.disconnect();
   }, []);
 
@@ -154,122 +136,67 @@ export default function Home() {
     try {
       await navigator.clipboard.writeText(value);
       setCopyMessage(`${label}已复制`);
-      window.setTimeout(() => setCopyMessage(""), 2200);
     } catch {
       setCopyMessage("复制失败，请手动复制");
-      window.setTimeout(() => setCopyMessage(""), 2200);
     }
+    window.setTimeout(() => setCopyMessage(""), 2200);
   };
 
   return (
-    <main className="portfolio-shell" id="top">
-      <div className="scroll-progress" aria-hidden="true"><span style={{ width: `${scrollProgress}%` }} /></div>
-      <aside className="profile-rail" aria-label="个人信息">
-        <div className="rail-inner">
-          <div className="rail-brand"><span className="brand-mark">F</span><span>平台工程 / 01</span></div>
-
-          <div className="profile-block">
-            <div className="profile-orbit"><span>FH</span></div>
-            <p className="rail-kicker">技术栈 / 能力域</p>
-            <h1>Java 后端<br /><em>工程师</em></h1>
-            <p className="profile-summary">Java / Spring Boot · Docker / Kubernetes · Prometheus / Grafana · RAG / Milvus</p>
-            <div className="availability"><i /> 正在寻找合适机会</div>
-          </div>
-
-          <div className="rail-section">
-            <p className="rail-label">核心技术栈</p>
-            <div className="stack-list">{skills.map((skill) => <span key={skill}>{skill}</span>)}</div>
-          </div>
-
-          <div className="rail-section rail-links">
-            <p className="rail-label">页面导航</p>
-            <a href="#projects">项目案例 <span>↗</span></a>
-            <a href="#capabilities">能力边界 <span>↗</span></a>
-            <a href="#experience">工作经历 <span>↗</span></a>
-          </div>
-
-          <div className="rail-bottom">
-            <a className="rail-button" href="/范文豪-Java全栈开发工程师.pdf" download>下载 PDF 简历 <span>↓</span></a>
-            <p>© 2026 / 简历作品集</p>
-          </div>
-        </div>
-      </aside>
-
-      <section className="content-column">
-        <header className="content-topbar">
-          <span>精选项目 / 2023—2026</span>
-          <a href="#contact">联系我 <span>↗</span></a>
+    <main className="liquid-page" id="top">
+      <div className="liquid-ambient liquid-ambient-one" aria-hidden="true" />
+      <div className="liquid-ambient liquid-ambient-two" aria-hidden="true" />
+      <div className="liquid-frame">
+        <header className="liquid-nav">
+          <a className="liquid-brand" href="#top"><span className="liquid-brand-mark">F</span><span>范文豪 / 作品集</span></a>
+          <nav aria-label="页面导航">
+            <a href="#capabilities">技术能力</a>
+            <a href="#projects">项目案例</a>
+            <a href="#experience">工作经历</a>
+            <a href="#contact">联系方式</a>
+          </nav>
+          <a className="liquid-nav-cta" href={resumePath} download>下载简历 <span>↓</span></a>
         </header>
 
-        <section className="overview-section" aria-labelledby="overview-title">
-          <div className="section-marker"><span>00</span><i /><span>总览</span></div>
-          <div className="overview-grid overview-ability-grid">
-            <div className="overview-intro">
-              <span className="overview-kicker">核心技术能力</span>
-              <h2 id="overview-title">核心技术<br /><strong>能力覆盖</strong></h2>
-              <p>以 Java / Spring Boot 为主，具备云原生平台、服务治理、监控告警与 RAG 应用的项目经验。</p>
-            </div>
-            <div className="overview-stack-grid" aria-label="核心技术能力">
-              <article className="overview-stack-card reveal-item">
-                <div className="overview-stack-card-top"><span>01 / 后端服务</span><i /></div>
-                <strong>Java · Spring Boot</strong>
-                <p>服务建模、接口设计、业务流程与状态管理</p>
-                <div className="overview-stack-tags"><span>Java</span><span>Spring Boot</span><span>REST</span></div>
-              </article>
-              <article className="overview-stack-card reveal-item">
-                <div className="overview-stack-card-top"><span>02 / 云原生平台</span><i /></div>
-                <strong>Docker · Kubernetes · Istio</strong>
-                <p>镜像制品、应用编排、集群接入与服务治理</p>
-                <div className="overview-stack-tags"><span>Docker</span><span>Kubernetes</span><span>Istio</span></div>
-              </article>
-              <article className="overview-stack-card reveal-item">
-                <div className="overview-stack-card-top"><span>03 / 可观测性</span><i /></div>
-                <strong>Prometheus · Grafana</strong>
-                <p>指标采集、监控面板、告警规则与异常定位</p>
-                <div className="overview-stack-tags"><span>Metrics</span><span>Alerting</span><span>Tracing</span></div>
-              </article>
-              <article className="overview-stack-card reveal-item">
-                <div className="overview-stack-card-top"><span>04 / AI 工程化</span><i /></div>
-                <strong>RAG · Milvus · SSE</strong>
-                <p>知识入库、检索增强、引用证据与流式问答</p>
-                <div className="overview-stack-tags"><span>RAG</span><span>Embedding</span><span>SSE</span></div>
-              </article>
-            </div>
+        <section className="liquid-hero liquid-reveal is-visible" aria-labelledby="hero-title">
+          <div className="liquid-hero-copy">
+            <p className="liquid-eyebrow"><span className="liquid-status-dot" /> Java 后端工程师 · 云原生平台 · AI 应用</p>
+            <h1 id="hero-title">Java 后端工程师<br /><em>云原生平台与 AI 应用</em></h1>
+            <p className="liquid-hero-description">以 Java / Spring Boot 为主，参与云原生平台、持续交付、可观测性和 RAG 应用的设计、开发与落地。</p>
+            <div className="liquid-hero-actions"><a className="liquid-button liquid-button-dark" href="#projects">查看项目 <span>↗</span></a><a className="liquid-button liquid-button-light" href={resumePath} download>下载 PDF <span>↓</span></a></div>
+            <div className="liquid-hero-meta"><span>正式工作经历</span><span>2023.06—2026.03</span><span>北京 / 可考虑远程</span></div>
           </div>
-          <div className="metric-strip overview-tech-strip"><div><strong>Java / Spring Boot</strong><span>主力后端技术</span></div><div><strong>Docker / K8s</strong><span>云原生运行基础</span></div><div><strong>Prometheus / Grafana</strong><span>监控与告警体系</span></div><div><strong>Go / dockertool</strong><span>工程辅助能力</span></div></div>
+          <div className="liquid-hero-art" aria-label="能力概览">
+            <div className="liquid-orbit orbit-large" /><div className="liquid-orbit orbit-small" />
+            <div className="liquid-float-card float-platform"><span>平台工程</span><strong>NativeSphere</strong><small>资源 · 发布 · 治理 · 观测</small><i>↗</i></div>
+            <div className="liquid-float-card float-observe"><span>可观测性</span><strong>100+</strong><small>服务监控与告警支持</small></div>
+            <div className="liquid-float-card float-ai"><span>AI 应用</span><strong>RAG</strong><small>带引用来源的智能问答</small></div>
+          </div>
         </section>
 
-        <section className="content-section" id="capabilities" aria-labelledby="capabilities-title">
-          <div className="section-marker"><span>个人定位</span><i /><span>能力概览</span></div>
-          <div className="section-heading"><h2 id="capabilities-title">能力概览</h2><p>覆盖 Java 后端、云原生平台、可观测性与 AI 应用，具体实践见下方项目案例。</p></div>
-          <div className="capability-grid">{capabilityItems.map((item) => <article className="capability-card reveal-item" key={item.title}><div className="capability-card-top"><span>{item.label}</span><i /></div><h3>{item.title}</h3><p>{item.text}</p></article>)}</div>
+        <section className="liquid-section liquid-capabilities" id="capabilities" aria-labelledby="capabilities-title">
+          <div className="liquid-section-head liquid-reveal"><div><p className="liquid-eyebrow">技术能力</p><h2 id="capabilities-title">我能解决什么问题</h2></div><p>从服务代码到平台运行环境，关注系统边界、数据流转和最终交付。</p></div>
+          <div className="liquid-capability-grid">{capabilities.map((item) => <article className="liquid-capability-card liquid-reveal" key={item.code}><div className="liquid-card-top"><span>{item.code}</span><i>↗</i></div><h3>{item.title}</h3><p>{item.text}</p><div className="liquid-tags">{item.tags.map((tag) => <span key={tag}>{tag}</span>)}</div></article>)}</div>
         </section>
 
-        <section className="content-section projects-section" id="projects" aria-labelledby="projects-title">
-          <div className="section-marker"><span>02</span><i /><span>精选项目</span></div>
-          <div className="section-heading project-heading"><h2 id="projects-title">项目案例</h2><p>每个项目按四层展开：项目定位、负责边界、关键工程动作和最终价值，让贡献不再停留在技术名词。</p></div>
-          <div className="project-index" aria-label="项目索引"><span>项目索引</span><div>{projects.map((project) => <a className={activeCase === project.slug ? "is-active" : ""} href={`#case-${project.slug}`} key={project.slug}>{project.name}</a>)}</div></div>
-          <div className="project-stack">{projects.map((project) => <article id={`case-${project.slug}`} className={`project-card project-${project.tone} reveal-item`} key={project.number}><div className="project-detail"><div className="project-name-line"><span>{project.category}</span><span>{project.stage}</span></div><div className="project-title-line"><h3>{project.name}</h3><a className="project-detail-link" href={`/projects/${project.slug}`}>查看工程视图 <span>↗</span></a></div><h4>{project.subtitle}</h4><div className="project-facts"><div><span>角色定位</span><strong>{project.role}</strong></div><div><span>负责范围</span><strong>{project.scope}</strong></div></div>{project.slug === "nativesphere" && <div className="project-subsystem-links" aria-label="NativeSphere 重点子系统"><span>重点子系统</span><a href="/projects/nativesphere/observability"><b>监控与告警系统</b><small>资源、指标、告警、事件与日志关联 →</small></a><a className="ai-link" href="/projects/nativesphere/ai-ops"><b>监控告警智能助手</b><small>告警上下文、RAG 检索与辅助处置 →</small></a></div>}<div className="project-flow" aria-label={`${project.name} 工程链路`}>{project.flow.map((step, index) => <div className="project-flow-step" key={step}><span>{String(index + 1).padStart(2, "0")}</span><strong>{step}</strong>{index < project.flow.length - 1 && <i aria-hidden="true" />}</div>)}</div><div className="detail-block"><span className="detail-label">问题边界</span><p>{project.challenge}</p></div><div className="detail-block"><span className="detail-label">关键工程动作</span><div className="work-grid">{project.details.map((detail, index) => <div className="work-item" key={detail.title}><span>{String(index + 1).padStart(2, "0")}</span><div><h5>{detail.title}</h5><p>{detail.text}</p></div></div>)}</div></div><div className="project-value"><span className="detail-label">工程价值</span><p>{project.value}</p></div><div className="project-tags">{project.tags.map((tag) => <span key={tag}>{tag}</span>)}</div></div></article>)}</div>
+        <section className="liquid-section liquid-projects" id="projects" aria-labelledby="projects-title">
+          <div className="liquid-section-head liquid-reveal"><div><p className="liquid-eyebrow">项目案例</p><h2 id="projects-title">参与过的工程</h2></div><p>每个项目提供独立工程视图，展开查看系统边界、关键动作和交付结果。</p></div>
+          <div className="liquid-project-index" aria-label="项目索引"><span>项目索引</span>{projects.map((project) => <a className={activeCase === project.slug ? "is-active" : ""} href={`#case-${project.slug}`} key={project.slug}>{project.name}</a>)}</div>
+          <div className="liquid-project-list">{projects.map((project) => <article className={`liquid-project-card liquid-card-${project.tone} liquid-reveal`} id={`case-${project.slug}`} key={project.slug}>
+            <div className="liquid-project-preview"><span className="liquid-preview-label">{project.category}</span><div className="liquid-preview-symbol">{project.mark}</div><div className="liquid-preview-lines"><i /><i /><i /></div><span className="liquid-preview-stage">{project.stage}</span></div>
+            <div className="liquid-project-copy"><div className="liquid-project-meta"><span>{project.number} / {project.category}</span><span>{project.stage}</span></div><div className="liquid-project-title"><div><h3>{project.name}</h3><h4>{project.subtitle}</h4></div><a className="liquid-view-button" href={`/projects/${project.slug}`}>查看工程视图 <span>↗</span></a></div><p className="liquid-project-challenge">{project.challenge}</p><div className="liquid-project-facts"><div><span>角色定位</span><strong>{project.role}</strong></div><div><span>负责范围</span><strong>{project.scope}</strong></div></div><div className="liquid-flow">{project.flow.map((step, index) => <span key={step}>{step}{index < project.flow.length - 1 && <b>→</b>}</span>)}</div><details className="liquid-project-more"><summary>查看关键工程动作 <span>＋</span></summary><div className="liquid-work-grid">{project.details.map((detail) => <div key={detail.title}><strong>{detail.title}</strong><p>{detail.text}</p></div>)}</div><div className="liquid-value"><span>工程价值</span><p>{project.value}</p></div></details><div className="liquid-tags">{project.tags.map((tag) => <span key={tag}>{tag}</span>)}</div></div>
+          </article>)}</div>
         </section>
 
-        <section className="content-section experience-section" id="experience" aria-labelledby="experience-title">
-          <div className="section-marker"><span>03</span><i /><span>经历</span></div>
-          <div className="section-heading"><h2 id="experience-title">经历与方向</h2><p>从后端开发进入云原生平台建设，在真实项目中不断扩大对系统边界和交付结果的负责范围。</p></div>
-          <div className="experience-list"><div className="experience-item reveal-item"><span className="experience-date">2023.06 — 2026.03</span><div><h3>航天宏图信息技术股份有限公司</h3><p>Java 后端工程师 · 云原生应用管理 / 镜像制品 / 服务治理 / 项目交付支持</p></div><span className="experience-type">正式工作</span></div><div className="experience-item reveal-item"><span className="experience-date">2020 — 2024</span><div><h3>东北林业大学</h3><p>本科 · 软件工程</p></div><span className="experience-type">教育经历</span></div></div>
+        <section className="liquid-section liquid-experience" id="experience" aria-labelledby="experience-title">
+          <div className="liquid-section-head liquid-reveal"><div><p className="liquid-eyebrow">工作经历</p><h2 id="experience-title">经历与方向</h2></div><p>从 Java 后端开发进入云原生平台建设，在真实项目中扩大负责范围。</p></div>
+          <div className="liquid-timeline"><article className="liquid-timeline-item liquid-reveal"><div className="liquid-timeline-date">2023.06—2026.03</div><div><h3>航天宏图信息技术股份有限公司</h3><p>Java 后端工程师 · 云原生应用管理 / 镜像制品 / 服务治理 / 项目交付支持</p></div><span>正式工作</span></article><article className="liquid-timeline-item liquid-reveal"><div className="liquid-timeline-date">2020—2024</div><div><h3>东北林业大学</h3><p>本科 · 软件工程</p></div><span>教育经历</span></article></div>
         </section>
 
-        <section className="contact-section" id="contact" aria-labelledby="contact-title">
-          <div className="contact-glow" />
-          <div className="section-marker"><span>04</span><i /><span>联系</span></div>
-          <h2 id="contact-title">联系我</h2>
-          <p>求职方向：Java 后端开发、云原生平台开发</p>
-          <div className="contact-actions"><button className="contact-copy" type="button" onClick={() => void copyContact("wh51368230@163.com", "邮箱")}><img className="contact-icon contact-icon-image" src="/contact-email.png" alt="" /><span>wh51368230@163.com</span><small>复制</small></button><button className="contact-copy" type="button" onClick={() => void copyContact("13051368230", "手机号")}><img className="contact-icon contact-icon-image" src="/contact-phone.png" alt="" /><span>13051368230</span><small>复制</small></button><a className="contact-resume" href="/范文豪-Java全栈开发工程师.pdf" download>下载简历 <span>↓</span></a></div>
-          {copyMessage && <div className="copy-toast" role="status" aria-live="polite"><i />{copyMessage}</div>}
-        </section>
+        <section className="liquid-contact liquid-reveal" id="contact" aria-labelledby="contact-title"><div><p className="liquid-eyebrow">联系方式</p><h2 id="contact-title">欢迎交流</h2><p>求职方向：Java 后端开发、云原生平台开发</p></div><div className="liquid-contact-actions"><button type="button" onClick={() => void copyContact("wh5136823@163.com", "邮箱")}><img src="/contact-email.png" alt="" /><span>wh5136823@163.com</span><small>复制</small></button><button type="button" onClick={() => void copyContact("13051368230", "手机号")}><img src="/contact-phone.png" alt="" /><span>13051368230</span><small>复制</small></button><a className="liquid-button liquid-button-dark" href={resumePath} download>下载简历 <span>↓</span></a></div>{copyMessage && <div className="liquid-copy-toast" role="status" aria-live="polite">{copyMessage}</div>}</section>
 
-        <footer className="content-footer"><span>Java 后端 / 平台工程</span><span>工程能力展示</span></footer>
-      </section>
-      <button className={`back-to-top${showTopButton ? " is-visible" : ""}`} type="button" onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })} aria-label="回到顶部">↑</button>
+        <footer className="liquid-footer"><span>Java 后端 / 平台工程 / AI 应用</span><span>© 2026 范文豪</span></footer>
+      </div>
     </main>
   );
 }
