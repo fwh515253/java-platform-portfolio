@@ -85,18 +85,18 @@ const projects = [
     tags: ["Java", "Spring Boot", "Vue", "MySQL", "Redis", "JWT"], tone: "rose",
   },
   {
-    number: "05", mark: "C", stage: "AI 方向 / 持续完善", slug: "cloudops",
+    number: "05", mark: "C", stage: "正式项目 / 已上线", slug: "cloudops",
     flow: ["事件接入", "工单生成", "分派流转", "协同处置", "知识沉淀"],
-    category: "智能运维方向", name: "CloudOps", subtitle: "智能工单与协同处置方案原型",
-    role: "方案设计与原型实现", scope: "工单流程 / 规则分派 / SLA / AI 辅助",
+    category: "智能运维平台", name: "CloudOps", subtitle: "智能工单与协同处置平台",
+    role: "Java 后端 / 平台工程", scope: "工单流程 / 规则分派 / SLA / AI 辅助",
     challenge: "监控告警、人工反馈和运维任务分散在不同渠道，缺少统一事件入口、责任分派、处理时限、协作记录和复盘知识。",
     details: [
       { title: "事件与工单模型", text: "统一告警事件、人工报障和运维任务，设计工单、处理人、优先级、状态、SLA 和操作时间线等核心对象。" },
       { title: "流转与协同机制", text: "围绕创建、分派、接单、转派、处理、验证和关闭组织状态流转，并保留评论、附件及操作记录。" },
       { title: "智能辅助", text: "结合历史工单与知识库，为工单分类、相似问题检索、处置建议和复盘摘要提供辅助能力。" },
     ],
-    value: "以真实运维场景为目标，形成事件接入、责任分派、SLA 管理、协同处置、过程审计与知识复用的完整方案，验证 AI 与实际工作流结合的路径。",
-    evidence: ["AI 运维方向作品", "事件 / 工单 / SLA 建模", "RAG 辅助处置流程"],
+    value: "面向真实运维场景落地事件接入、责任分派、SLA 管理、协同处置、过程审计与知识复用闭环，推动 AI 能力进入实际运维工作流。",
+    evidence: ["已上线使用", "事件 / 工单 / SLA 建模", "RAG 辅助处置流程"],
     tags: ["Java", "Spring Boot", "Vue", "MySQL", "Redis", "Workflow", "RAG"], tone: "mint",
   },
 ];
@@ -175,8 +175,8 @@ export default function Home() {
             <h1 id="hero-title">Java 后端工程师<br /><em>云原生平台与 AI 应用</em></h1>
             <p className="liquid-hero-description">以 Java / Spring Boot 为主，参与云原生平台、持续交付、可观测性和 RAG 应用的设计、开发与落地。</p>
             <div className="liquid-hero-actions"><a className="liquid-button liquid-button-dark" href="#projects">查看项目 <span>↗</span></a><a className="liquid-button liquid-button-light" href={resumePath} download>下载 PDF <span>↓</span></a></div>
-            <div className="liquid-hero-meta"><span>正式工作经历</span><span>2023.06—2026.03</span><span>北京 / 可考虑远程</span></div>
-            <div className="liquid-proof-strip" aria-label="求职能力摘要"><div><strong>近 3 年</strong><span>Java 后端开发</span></div><div><strong>100+</strong><span>服务监控支持</span></div><div><strong>已上线</strong><span>NativeSphere 平台</span></div></div>
+            <div className="liquid-hero-meta"><span>工作经验</span><span>3 年</span><span>合肥 / 仅考虑合肥</span></div>
+            <div className="liquid-proof-strip" aria-label="求职能力摘要"><div><strong>3 年</strong><span>Java 后端开发</span></div><div><strong>100+</strong><span>服务监控支持</span></div><div><strong>已上线</strong><span>NativeSphere 平台</span></div></div>
           </div>
           <div className="liquid-hero-art" aria-label="能力概览">
             <div className="liquid-orbit orbit-large" /><div className="liquid-orbit orbit-small" />

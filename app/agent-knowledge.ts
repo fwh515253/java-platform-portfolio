@@ -17,7 +17,7 @@ export const agentKnowledge: AgentKnowledgeChunk[] = [
     title: "个人定位与技术栈",
     category: "基本信息",
     keywords: ["技术栈", "会什么", "Java", "后端", "云原生", "AI"],
-    content: "范文豪，Java 后端工程师，正式工作经历为 2023.06—2026.03。主要技术方向是 Java、Spring Boot、MyBatis、MySQL、Redis、Vue，以及 Docker、Harbor、Kubernetes、Istio、Prometheus、Grafana、Milvus 和 RAG。能够参与从业务建模、后端接口、前后端联调到容器化部署、运行排障的完整工程链路。Go 主要用于工程辅助和简单技术落地。",
+    content: "范文豪，Java 后端工程师，正式工作经历为 2023.06—2026.03。主要技术方向是 Java、Spring Boot、MyBatis、MySQL、Redis、Vue，以及 Docker、Harbor、Kubernetes、Istio、Prometheus、Grafana、Milvus 和 RAG。当前知识库中的 NativeSphere、监控告警、持续交付、BPAAS、OA、RAG 和 CloudOps 项目均已完成落地并上线。能够参与从业务建模、后端接口、前后端联调到容器化部署、运行排障的完整工程链路。Go 主要用于工程辅助和简单技术落地。",
   },
   {
     id: "strengths",
@@ -71,23 +71,23 @@ export const agentKnowledge: AgentKnowledgeChunk[] = [
   {
     id: "rag",
     title: "RAG 知识库问答应用",
-    category: "AI 应用方向 / 方案原型",
+    category: "正式项目 / 已上线",
     keywords: ["RAG", "知识库", "Milvus", "Embedding", "DeepSeek", "通义千问", "SSE"],
-    content: "RAG 知识库问答应用面向企业制度、产品手册、操作文档和常见问题。方案包括文档解析、文本提取、Chunk 切分、Embedding 生成、Milvus 向量存储、TopK 检索、相似度阈值、Prompt 组装、带引用来源的答案生成和 SSE 流式响应。个人可承担知识库、文档、文本分段、会话、问答记录和模型配置等核心数据模型及接口设计，并封装 DeepSeek、通义千问等 OpenAI 兼容 API，支持模型切换、超时重试和调用日志。该项目在网站中作为 AI 应用方向方案与原型展示，面试时应明确实际落地状态。",
+    content: "RAG 知识库问答应用已经落地上线，面向企业制度、产品手册、操作文档和常见问题，形成从文档解析、文本提取、Chunk 切分、Embedding 生成、Milvus 向量存储，到 TopK 检索、相似度阈值、Prompt 组装、带引用来源的答案生成和 SSE 流式响应的完整链路。个人承担知识库、文档、文本分段、会话、问答记录和模型配置等核心数据模型及接口设计，并完成 DeepSeek、通义千问等 OpenAI 兼容模型的统一接入、模型切换、超时重试和调用日志建设。",
   },
   {
     id: "cloudops",
     title: "CloudOps 智能运维助手",
-    category: "AI 运维方向 / 持续完善",
+    category: "正式项目 / 已上线",
     keywords: ["CloudOps", "智能运维", "工单", "SLA", "AI助手", "事件", "RAG运维"],
-    content: "CloudOps 是围绕真实运维场景设计的智能工单与协同处置方案原型。方案统一接入告警事件、人工报障和运维任务，建立事件、工单、处理人、优先级、状态、SLA、评论、附件和操作时间线等对象；支持分派、接单、转派、处理、验证和关闭；结合历史工单与知识库，为工单分类、相似问题检索、处置建议和复盘摘要提供 RAG 辅助。它属于 AI 方向持续完善的作品，不应表述为已经上线的正式生产系统。",
+    content: "CloudOps 已落地上线，面向告警事件、人工报障和运维任务建立统一的智能工单与协同处置平台。系统围绕事件、工单、处理人、优先级、状态、SLA、评论、附件和操作时间线等核心对象，形成从事件接入、责任分派、协同处理、验证关闭到知识沉淀的完整闭环；结合历史工单与知识库，为工单分类、相似问题检索、处置建议和复盘摘要提供 RAG 辅助。个人参与事件与工单模型、状态流转、规则分派、SLA 管理和 AI 辅助能力建设。",
   },
   {
     id: "job-preference",
     title: "求职方向",
     category: "求职信息",
     keywords: ["求职", "岗位", "期望", "方向", "工作"],
-    content: "求职方向是 Java 后端开发、云原生平台开发和平台工程相关岗位。希望承担业务后端、平台能力、交付编排、服务治理、可观测性或 AI 工程化相关工作，并持续扩大从模块开发到系统运行和工程交付的责任范围。",
+    content: "求职方向是 Java 后端开发、云原生平台开发和平台工程相关岗位。目前只考虑在合肥工作。希望承担业务后端、平台能力、交付编排、服务治理、可观测性或 AI 工程化相关工作，并持续扩大从模块开发到系统运行和工程交付的责任范围。",
   },
   {
     id: "contact",
