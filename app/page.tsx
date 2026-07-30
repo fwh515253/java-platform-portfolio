@@ -165,7 +165,6 @@ export default function Home() {
           <div className="liquid-mobile-links" aria-label="移动端页面导航">
             <a href="#capabilities">能力</a><a href="#projects">项目</a><a href="#contact">联系</a>
           </div>
-          <a className="liquid-nav-github" href="https://github.com/fwh515253/java-platform-portfolio" target="_blank" rel="noreferrer">GitHub ↗</a>
           <a className="liquid-nav-cta" href={resumePath} download>下载简历 <span>↓</span></a>
         </header>
 

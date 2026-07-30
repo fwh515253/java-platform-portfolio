@@ -10,6 +10,13 @@ type Message = {
   streaming?: boolean;
   sources?: string[];
   steps?: string[];
+  plan?: TaskPlan;
+};
+
+type TaskPlan = {
+  goal: string;
+  actions: string[];
+  boundary: string;
 };
 
 const suggestedQuestions = [
@@ -72,7 +79,7 @@ export default function AgentAssistant() {
   const [loading, setLoading] = useState(false);
   const messageBoxRef = useRef<HTMLDivElement>(null);
   const [messages, setMessages] = useState<Message[]>([
-    { role: "assistant", content: "你好，我是范文豪的招聘问答助手。可以向我了解他的技术能力、项目职责、工程经验和求职方向。" },
+    { role: "assistant", content: "你好，我是范文豪的个人 Agent。你可以直接向我了解我的技术能力、项目职责、工程经验和求职方向。" },
   ]);
 
   useEffect(() => {
@@ -113,12 +120,16 @@ export default function AgentAssistant() {
     setMessages((current) => [...current, { role: "user", content: cleanQuestion }]);
     setLoading(true);
     try {
+      const history = messages.slice(-6).map((message) => ({
+        role: message.role,
+        content: message.fullContent ?? message.content,
+      }));
       const response = await fetch("/api/agent", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ query: cleanQuestion }),
+        body: JSON.stringify({ query: cleanQuestion, history }),
       });
-      const result = await response.json() as { answer?: string; sources?: string[]; steps?: string[]; error?: string };
+      const result = await response.json() as { answer?: string; sources?: string[]; steps?: string[]; plan?: TaskPlan; error?: string };
       setMessages((current) => [...current, {
         role: "assistant",
         content: "",
@@ -126,6 +137,7 @@ export default function AgentAssistant() {
         streaming: true,
         sources: result.sources,
         steps: result.steps,
+        plan: result.plan,
       }]);
     } catch {
       setMessages((current) => [...current, { role: "assistant", content: "暂时无法连接问答服务。你仍然可以通过页面下方的项目案例和 PDF 简历了解我的经历。" }]);
@@ -149,7 +161,7 @@ export default function AgentAssistant() {
         <section className="agent-panel">
           <header className="agent-header"><div><span className="liquid-eyebrow"><i />招聘问答助手</span><h2 id="agent-title">了解我的工程能力</h2><p>基于项目资料回答，信息不足时会明确说明。</p></div><button type="button" className="agent-close" onClick={() => setOpen(false)} aria-label="关闭">×</button></header>
           <div className="agent-suggestions">{suggestedQuestions.map((question) => <button type="button" key={question} onClick={() => void ask(question)}>{question}</button>)}</div>
-          <div className="agent-messages" ref={messageBoxRef} aria-live="polite">{messages.map((message, index) => <article className={`agent-message agent-message-${message.role}${message.streaming ? " agent-message-streaming" : ""}`} key={`${message.role}-${index}`}><span className="agent-message-label">{message.role === "assistant" ? "Agent" : "你"}</span>{message.role === "assistant" ? <div className="agent-answer">{renderAnswer(message.content)}</div> : <p>{message.content}</p>}{message.steps && message.steps.length > 0 && !message.streaming && <div className="agent-trace"><span>执行链路</span>{message.steps.slice(0, 4).map((step) => <b key={step}>{step}</b>)}</div>}{message.sources && message.sources.length > 0 && !message.streaming && <div className="agent-sources">资料：{message.sources.slice(0, 2).map((source) => <span key={source}>{source}</span>)}</div>}</article>)}{loading && <article className="agent-message agent-message-assistant"><span className="agent-message-label">Agent</span><p className="agent-thinking"><span>正在分析问题并选择工具</span><i /><i /><i /></p></article>}</div>
+          <div className="agent-messages" ref={messageBoxRef} aria-live="polite">{messages.map((message, index) => <article className={`agent-message agent-message-${message.role}${message.streaming ? " agent-message-streaming" : ""}`} key={`${message.role}-${index}`}><span className="agent-message-label">{message.role === "assistant" ? "Agent" : "你"}</span>{message.role === "assistant" ? <div className="agent-answer">{renderAnswer(message.content)}</div> : <p>{message.content}</p>}{message.plan && !message.streaming && <div className="agent-plan"><div><span>任务目标</span><strong>{message.plan.goal}</strong></div><div className="agent-plan-actions"><span>执行计划</span>{message.plan.actions.map((action) => <b key={action}>{action}</b>)}</div><small>安全边界：{message.plan.boundary}</small></div>}{message.steps && message.steps.length > 0 && !message.streaming && <div className="agent-trace"><span>执行链路</span>{message.steps.slice(0, 5).map((step) => <b key={step}>{step}</b>)}</div>}{message.sources && message.sources.length > 0 && !message.streaming && <div className="agent-sources">资料：{message.sources.slice(0, 2).map((source) => <span key={source}>{source}</span>)}</div>}</article>)}{loading && <article className="agent-message agent-message-assistant"><span className="agent-message-label">Agent</span><p className="agent-thinking"><span>正在识别任务并选择工具</span><i /><i /><i /></p></article>}</div>
           <form className="agent-form" onSubmit={submit}><input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="例如：NativeSphere 中我负责哪些模块？" aria-label="输入问题" /><button type="submit" disabled={loading || !query.trim()}>发送 <span>↗</span></button></form>
           <p className="agent-disclaimer">仅基于公开作品集资料回答，不替代正式简历或面试沟通。</p>
         </section>
