@@ -21,6 +21,13 @@ export type EngineeringSpec = {
   previewType: "platform" | "pipeline" | "gateway" | "oa";
 };
 
+const projectEvidence: Record<string, string[]> = {
+  nativesphere: ["已上线使用", "支持 100+ 服务监控", "资源、指标、告警和日志关联"],
+  "release-flow": ["Kubernetes / Jenkins 双执行通道", "发布状态与日志统一追踪", "失败重试与回滚"],
+  bpaas: ["服务、接口、环境、路由统一模型", "配置下发与结果回读", "参与网关联调与问题定位"],
+  oa: ["端到端全栈模块交付", "审批状态可追踪", "权限与审计留痕"],
+};
+
 export const engineeringSpecs: Record<string, EngineeringSpec> = {
   nativesphere: {
     slug: "nativesphere",
@@ -252,6 +259,8 @@ export function EngineeringView({ spec }: { spec: EngineeringSpec }) {
         <div className="ns-eyebrow"><span>{spec.period}</span><i /><span>{spec.category}</span></div>
         <div className="ns-hero-grid"><div><h1 className="generic-ns-title">{spec.shortTitle}</h1><p>{spec.title}</p></div><div className="ns-hero-copy"><span>{spec.brief}</span><div className="ns-hero-tags"><span>{spec.role}</span><span>{spec.scope}</span></div></div></div>
         <div className="ns-meta-strip"><div><span>项目周期</span><strong>{spec.period}</strong></div><div><span>角色定位</span><strong>{spec.role}</strong></div><div><span>负责范围</span><strong>{spec.scope}</strong></div></div>
+        <div className="case-evidence-strip" aria-label="项目证据"><span>项目证据</span>{(projectEvidence[spec.slug] ?? []).map((item) => <b key={item}>{item}</b>)}</div>
+        <p className="case-demo-note">工程视图用于展示能力组织方式；其中的指标、状态和日志为示例数据，不代表生产实时数据。</p>
       </header>
 
       <section className="ns-section ns-intro">

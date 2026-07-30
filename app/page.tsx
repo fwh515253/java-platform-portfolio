@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import AgentAssistant from "./agent-assistant";
 
 const resumePath = "/范文豪-Java全栈开发工程师.pdf";
 
@@ -34,6 +35,7 @@ const projects = [
       { title: "全栈交付", text: "参与 Vue 管理端页面、接口联调、测试发布、部署排障和文档沉淀，覆盖功能从设计到运行验证的完整过程。" },
     ],
     value: "形成资源接管、制品交付、应用部署、服务治理、运行观测与事件处置的一体化闭环，降低研发和运维团队使用云原生基础设施的复杂度。",
+    evidence: ["已上线使用", "支持 100+ 服务监控", "资源 / 指标 / 告警关联"],
     tags: ["Java", "Vue", "Kubernetes", "Istio", "Prometheus", "RAG"], tone: "blue",
   },
   {
@@ -49,6 +51,7 @@ const projects = [
       { title: "发布控制台", text: "参与 Vue 端发布创建、执行方式选择、环境配置、进度日志、重试与回滚页面及接口联调。" },
     ],
     value: "将 Kubernetes 与 Jenkins 两类发布方式纳入同一控制面，建立版本、制品、环境、任务和结果的端到端追溯关系。",
+    evidence: ["Kubernetes / Jenkins 双通道", "状态与日志统一追踪", "失败重试与回滚"],
     tags: ["Spring Boot", "Vue", "Kubernetes", "Jenkins", "Pipeline"], tone: "lilac",
   },
   {
@@ -63,6 +66,7 @@ const projects = [
       { title: "运行支持", text: "维护调用记录和运行信息，配合网关研发完成策略验证、系统联调、问题定位及版本发布。" },
     ],
     value: "形成统一的服务接入和配置管理流程，提升内部系统网关接入的规范性、可维护性与问题追溯能力。",
+    evidence: ["服务 / 接口 / 环境 / 路由模型", "配置下发与状态回读", "网关联调与问题定位"],
     tags: ["Java", "Spring Cloud", "MyBatis", "MySQL", "Redis", "API Gateway"], tone: "peach",
   },
   {
@@ -77,20 +81,22 @@ const projects = [
       { title: "权限与体验", text: "维护用户、角色、菜单及数据权限，完成列表、表单、详情和审批页面的交互及异常提示。" },
     ],
     value: "完成从数据模型、服务接口到前端交互的端到端交付，将线下流程转化为具有权限控制和审计能力的线上业务流程。",
+    evidence: ["端到端全栈模块交付", "审批状态可追踪", "权限与审计留痕"],
     tags: ["Java", "Spring Boot", "Vue", "MySQL", "Redis", "JWT"], tone: "rose",
   },
   {
-    number: "05", mark: "C", stage: "2026.04—至今", slug: "cloudops",
+    number: "05", mark: "C", stage: "AI 方向 / 持续完善", slug: "cloudops",
     flow: ["事件接入", "工单生成", "分派流转", "协同处置", "知识沉淀"],
-    category: "智能运维", name: "CloudOps", subtitle: "智能工单与协同处置平台",
-    role: "全栈方案设计与实现", scope: "工单流程 / 规则分派 / SLA / AI 辅助",
+    category: "智能运维方向", name: "CloudOps", subtitle: "智能工单与协同处置方案原型",
+    role: "方案设计与原型实现", scope: "工单流程 / 规则分派 / SLA / AI 辅助",
     challenge: "监控告警、人工反馈和运维任务分散在不同渠道，缺少统一事件入口、责任分派、处理时限、协作记录和复盘知识。",
     details: [
       { title: "事件与工单模型", text: "统一告警事件、人工报障和运维任务，设计工单、处理人、优先级、状态、SLA 和操作时间线等核心对象。" },
       { title: "流转与协同机制", text: "围绕创建、分派、接单、转派、处理、验证和关闭组织状态流转，并保留评论、附件及操作记录。" },
       { title: "智能辅助", text: "结合历史工单与知识库，为工单分类、相似问题检索、处置建议和复盘摘要提供辅助能力。" },
     ],
-    value: "形成事件接入、责任分派、SLA 管理、协同处置、过程审计与知识复用的完整闭环，体现复杂业务建模、全栈交付及 AI 与实际工作流结合的能力。",
+    value: "以真实运维场景为目标，形成事件接入、责任分派、SLA 管理、协同处置、过程审计与知识复用的完整方案，验证 AI 与实际工作流结合的路径。",
+    evidence: ["AI 运维方向作品", "事件 / 工单 / SLA 建模", "RAG 辅助处置流程"],
     tags: ["Java", "Spring Boot", "Vue", "MySQL", "Redis", "Workflow", "RAG"], tone: "mint",
   },
 ];
@@ -106,6 +112,7 @@ export default function Home() {
       revealItems.forEach((item) => item.classList.add("is-visible"));
       return;
     }
+    revealItems.forEach((item) => item.classList.add("motion-ready"));
     const observer = new IntersectionObserver((entries) => {
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
@@ -155,6 +162,10 @@ export default function Home() {
             <a href="#experience">工作经历</a>
             <a href="#contact">联系方式</a>
           </nav>
+          <div className="liquid-mobile-links" aria-label="移动端页面导航">
+            <a href="#capabilities">能力</a><a href="#projects">项目</a><a href="#contact">联系</a>
+          </div>
+          <a className="liquid-nav-github" href="https://github.com/fwh515253/java-platform-portfolio" target="_blank" rel="noreferrer">GitHub ↗</a>
           <a className="liquid-nav-cta" href={resumePath} download>下载简历 <span>↓</span></a>
         </header>
 
@@ -165,6 +176,7 @@ export default function Home() {
             <p className="liquid-hero-description">以 Java / Spring Boot 为主，参与云原生平台、持续交付、可观测性和 RAG 应用的设计、开发与落地。</p>
             <div className="liquid-hero-actions"><a className="liquid-button liquid-button-dark" href="#projects">查看项目 <span>↗</span></a><a className="liquid-button liquid-button-light" href={resumePath} download>下载 PDF <span>↓</span></a></div>
             <div className="liquid-hero-meta"><span>正式工作经历</span><span>2023.06—2026.03</span><span>北京 / 可考虑远程</span></div>
+            <div className="liquid-proof-strip" aria-label="求职能力摘要"><div><strong>近 3 年</strong><span>Java 后端开发</span></div><div><strong>100+</strong><span>服务监控支持</span></div><div><strong>已上线</strong><span>NativeSphere 平台</span></div></div>
           </div>
           <div className="liquid-hero-art" aria-label="能力概览">
             <div className="liquid-orbit orbit-large" /><div className="liquid-orbit orbit-small" />
@@ -184,7 +196,7 @@ export default function Home() {
           <div className="liquid-project-index" aria-label="项目索引"><span>项目索引</span>{projects.map((project) => <a className={activeCase === project.slug ? "is-active" : ""} href={`#case-${project.slug}`} key={project.slug}>{project.name}</a>)}</div>
           <div className="liquid-project-list">{projects.map((project) => <article className={`liquid-project-card liquid-card-${project.tone} liquid-reveal`} id={`case-${project.slug}`} key={project.slug}>
             <div className="liquid-project-preview"><span className="liquid-preview-label">{project.category}</span><div className="liquid-preview-symbol">{project.mark}</div><div className="liquid-preview-lines"><i /><i /><i /></div><span className="liquid-preview-stage">{project.stage}</span></div>
-            <div className="liquid-project-copy"><div className="liquid-project-meta"><span>{project.number} / {project.category}</span><span>{project.stage}</span></div><div className="liquid-project-title"><div><h3>{project.name}</h3><h4>{project.subtitle}</h4></div><a className="liquid-view-button" href={`/projects/${project.slug}`}>查看工程视图 <span>↗</span></a></div><p className="liquid-project-challenge">{project.challenge}</p><div className="liquid-project-facts"><div><span>角色定位</span><strong>{project.role}</strong></div><div><span>负责范围</span><strong>{project.scope}</strong></div></div><div className="liquid-flow">{project.flow.map((step, index) => <span key={step}>{step}{index < project.flow.length - 1 && <b>→</b>}</span>)}</div><details className="liquid-project-more"><summary>查看关键工程动作 <span>＋</span></summary><div className="liquid-work-grid">{project.details.map((detail) => <div key={detail.title}><strong>{detail.title}</strong><p>{detail.text}</p></div>)}</div><div className="liquid-value"><span>工程价值</span><p>{project.value}</p></div></details><div className="liquid-tags">{project.tags.map((tag) => <span key={tag}>{tag}</span>)}</div></div>
+            <div className="liquid-project-copy"><div className="liquid-project-meta"><span>{project.number} / {project.category}</span><span>{project.stage}</span></div><div className="liquid-project-title"><div><h3>{project.name}</h3><h4>{project.subtitle}</h4></div><a className="liquid-view-button" href={`/projects/${project.slug}`}>查看工程视图 <span>↗</span></a></div><p className="liquid-project-challenge">{project.challenge}</p><div className="liquid-project-facts"><div><span>角色定位</span><strong>{project.role}</strong></div><div><span>负责范围</span><strong>{project.scope}</strong></div></div><div className="liquid-project-evidence" aria-label="项目证据"><span>工程证据</span>{project.evidence.map((item) => <b key={item}>{item}</b>)}</div><div className="liquid-flow">{project.flow.map((step, index) => <span key={step}>{step}{index < project.flow.length - 1 && <b>→</b>}</span>)}</div><details className="liquid-project-more"><summary>查看关键工程动作 <span>＋</span></summary><div className="liquid-work-grid">{project.details.map((detail) => <div key={detail.title}><strong>{detail.title}</strong><p>{detail.text}</p></div>)}</div><div className="liquid-value"><span>工程价值</span><p>{project.value}</p></div></details><div className="liquid-tags">{project.tags.map((tag) => <span key={tag}>{tag}</span>)}</div></div>
           </article>)}</div>
         </section>
 
@@ -193,10 +205,11 @@ export default function Home() {
           <div className="liquid-timeline"><article className="liquid-timeline-item liquid-reveal"><div className="liquid-timeline-date">2023.06—2026.03</div><div><h3>航天宏图信息技术股份有限公司</h3><p>Java 后端工程师 · 云原生应用管理 / 镜像制品 / 服务治理 / 项目交付支持</p></div><span>正式工作</span></article><article className="liquid-timeline-item liquid-reveal"><div className="liquid-timeline-date">2020—2024</div><div><h3>东北林业大学</h3><p>本科 · 软件工程</p></div><span>教育经历</span></article></div>
         </section>
 
-        <section className="liquid-contact liquid-reveal" id="contact" aria-labelledby="contact-title"><div><p className="liquid-eyebrow">联系方式</p><h2 id="contact-title">欢迎交流</h2><p>求职方向：Java 后端开发、云原生平台开发</p></div><div className="liquid-contact-actions"><button type="button" onClick={() => void copyContact("wh5136823@163.com", "邮箱")}><img src="/contact-email.png" alt="" /><span>wh5136823@163.com</span><small>复制</small></button><button type="button" onClick={() => void copyContact("13051368230", "手机号")}><img src="/contact-phone.png" alt="" /><span>13051368230</span><small>复制</small></button><a className="liquid-button liquid-button-dark" href={resumePath} download>下载简历 <span>↓</span></a></div>{copyMessage && <div className="liquid-copy-toast" role="status" aria-live="polite">{copyMessage}</div>}</section>
+        <section className="liquid-contact liquid-reveal" id="contact" aria-labelledby="contact-title"><div><p className="liquid-eyebrow">联系方式</p><h2 id="contact-title">欢迎交流</h2><p>求职方向：Java 后端开发、云原生平台开发</p></div><div className="liquid-contact-actions"><button type="button" onClick={() => void copyContact("wh5136823@163.com", "邮箱")} aria-label="复制邮箱"><img src="/contact-email.png" alt="" /><span>wh5136823@163.com</span><small>复制</small></button><button type="button" onClick={() => void copyContact("13051368230", "手机号")} aria-label="复制手机号"><img src="/contact-phone.png" alt="" /><span>13051368230</span><small>复制</small></button><a className="liquid-direct-link" href="mailto:wh5136823@163.com">邮件联系 ↗</a><a className="liquid-direct-link" href="tel:13051368230">电话联系 ↗</a><a className="liquid-button liquid-button-dark" href={resumePath} download>下载简历 <span>↓</span></a></div>{copyMessage && <div className="liquid-copy-toast" role="status" aria-live="polite">{copyMessage}</div>}</section>
 
         <footer className="liquid-footer"><span>Java 后端 / 平台工程 / AI 应用</span><span>© 2026 范文豪</span></footer>
       </div>
+      <AgentAssistant />
     </main>
   );
 }
