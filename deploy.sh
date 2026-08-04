@@ -26,6 +26,14 @@ cd "$APP_DIR" || fail "项目目录不存在：$APP_DIR"
 
 git rev-parse --is-inside-work-tree >/dev/null 2>&1 || fail "不是 Git 仓库：$APP_DIR"
 
+# 让 PM2 在重启时继承站点私有环境变量；.env.local 不会提交到仓库。
+if [[ -f .env.local ]]; then
+  set -a
+  # shellcheck disable=SC1091
+  source .env.local
+  set +a
+fi
+
 if [[ -n "$(git status --porcelain)" ]]; then
   fail "工作区存在未提交改动，请先处理后再部署"
 fi
