@@ -128,6 +128,7 @@ export default function AgentAssistant() {
   const [recordDraft, setRecordDraft] = useState<RecruiterDraft>(initialRecruiterDraft);
   const [recordSaving, setRecordSaving] = useState(false);
   const [recordError, setRecordError] = useState("");
+  const [recordPromptVisible, setRecordPromptVisible] = useState(false);
   const messageBoxRef = useRef<HTMLDivElement>(null);
   const [messages, setMessages] = useState<Message[]>([
     { role: "assistant", content: "你好，我是范文豪的个人 Agent。你可以直接向我了解我的技术能力、项目职责、工程经验和求职方向。" },
@@ -204,6 +205,7 @@ export default function AgentAssistant() {
   const startRecruiterRecord = () => {
     if (loading || recordSaving) return;
     setQuery("");
+    setRecordPromptVisible(false);
     setRecordDraft(initialRecruiterDraft);
     setRecordError("");
     setRecordStep("companyName");
@@ -279,13 +281,14 @@ export default function AgentAssistant() {
 
   return (
     <>
-      <button className="agent-launcher" type="button" onClick={() => setOpen(true)} aria-label="打开招聘问答助手">
+      <button className="agent-launcher" type="button" onClick={() => { setOpen(true); setRecordPromptVisible(true); }} aria-label="打开招聘问答助手">
         <span className="agent-launcher-spark">✦</span><span>问问我的 Agent</span><b>↗</b>
       </button>
       {open && <div className="agent-shell" role="dialog" aria-modal="true" aria-labelledby="agent-title">
         <button className="agent-backdrop" type="button" aria-label="关闭招聘问答助手" onClick={() => setOpen(false)} />
         <section className="agent-panel">
           <header className="agent-header"><div><span className="liquid-eyebrow"><i />招聘问答助手</span><h2 id="agent-title">了解我的工程能力</h2><p>基于项目资料回答，信息不足时会明确说明。</p></div><button type="button" className="agent-close" onClick={() => setOpen(false)} aria-label="关闭">×</button></header>
+          {recordPromptVisible && <section className="agent-record-intro"><button type="button" className="agent-record-intro-close" aria-label="暂不登记" onClick={() => setRecordPromptVisible(false)}>×</button><span>招聘沟通记录</span><strong>如果您正在沟通岗位，也可以让我记录公司与岗位信息。</strong><p>信息确认后才保存，仅用于后续招聘沟通，不会公开展示。</p><div><button type="button" onClick={startRecruiterRecord}>开始登记 <b>↗</b></button><button type="button" onClick={() => setRecordPromptVisible(false)}>先了解项目</button></div></section>}
           <div className="agent-suggestions">{suggestedQuestions.map((question) => <button type="button" key={question} onClick={() => void ask(question)}>{question}</button>)}<button type="button" className="agent-record-trigger" onClick={startRecruiterRecord}>登记公司信息</button></div>
           <div className="agent-messages" ref={messageBoxRef} aria-live="polite">{messages.map((message, index) => <article className={`agent-message agent-message-${message.role}${message.streaming ? " agent-message-streaming" : ""}`} key={`${message.role}-${index}`}><span className="agent-message-label">{message.role === "assistant" ? "Agent" : "你"}</span>{message.role === "assistant" ? <div className="agent-answer">{renderAnswer(message.content)}</div> : <p>{message.content}</p>}{message.plan && !message.streaming && <div className="agent-plan"><div><span>任务目标</span><strong>{message.plan.goal}</strong></div><div className="agent-plan-actions"><span>执行计划</span>{message.plan.actions.map((action) => <b key={action}>{action}</b>)}</div><small>安全边界：{message.plan.boundary}</small></div>}{message.steps && message.steps.length > 0 && !message.streaming && <div className="agent-trace"><span>执行链路</span>{message.steps.slice(0, 5).map((step) => <b key={step}>{step}</b>)}</div>}{message.sources && message.sources.length > 0 && !message.streaming && <div className="agent-sources">资料：{message.sources.slice(0, 2).map((source) => <span key={source}>{source}</span>)}</div>}</article>)}{loading && <article className="agent-message agent-message-assistant"><span className="agent-message-label">Agent</span><p className="agent-thinking"><span>正在识别任务并选择工具</span><i /><i /><i /></p></article>}</div>
           {recordStep === "confirm" && <section className="agent-record-confirm" aria-label="确认招聘沟通记录"><div><span>招聘沟通记录</span><b>待确认</b></div><dl><div><dt>公司</dt><dd>{recordDraft.companyName}</dd></div><div><dt>岗位</dt><dd>{recordDraft.position}</dd></div>{recordDraft.location && <div><dt>地点 / 团队</dt><dd>{recordDraft.location}</dd></div>}{recordDraft.interviewAt && <div><dt>面试时间</dt><dd>{recordDraft.interviewAt}</dd></div>}{recordDraft.jobDescription && <div><dt>岗位重点</dt><dd>{recordDraft.jobDescription}</dd></div>}</dl>{recordError && <p className="agent-record-error">{recordError}</p>}<div className="agent-record-actions"><button type="button" onClick={cancelRecruiterRecord}>取消</button><button type="button" onClick={startRecruiterRecord}>重新填写</button><button type="button" className="agent-record-save" disabled={recordSaving} onClick={() => void saveRecruiterRecord()}>{recordSaving ? "保存中…" : "确认保存"}</button></div></section>}
